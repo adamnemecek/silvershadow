@@ -33,7 +33,7 @@ struct Float16: CustomStringConvertible {
 
     static func floats_to_float16s(values: [Float]) -> [UInt16] {
         var inputs = values
-        var outputs = Array<UInt16>(repeating: 0, count: values.count)
+        var outputs = [UInt16](repeating: 0, count: values.count)
 		let width = vImagePixelCount(values.count)
         var sourceBuffer = vImage_Buffer(data: &inputs, height: 1, width: width, rowBytes: MemoryLayout<Float>.size * values.count)
         var destinationBuffer = vImage_Buffer(data: &outputs, height: 1, width: width, rowBytes: MemoryLayout<UInt16>.size * values.count)
@@ -43,7 +43,7 @@ struct Float16: CustomStringConvertible {
 
     static func float16s_to_floats(values: [UInt16]) -> [Float] {
         var inputs: [UInt16] = values
-        var outputs: [Float] = Array<Float>(repeating: 0, count: values.count)
+        var outputs: [Float] = [Float](repeating: 0, count: values.count)
 		let width = vImagePixelCount(values.count)
         var sourceBuffer = vImage_Buffer(data: &inputs, height: 1, width: width, rowBytes: MemoryLayout<UInt16>.size * values.count)
         var destinationBuffer = vImage_Buffer(data: &outputs, height: 1, width: width, rowBytes: MemoryLayout<Float>.size * values.count)

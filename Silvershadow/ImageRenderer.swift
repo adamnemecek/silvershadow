@@ -14,6 +14,69 @@ import GLKit
 
 typealias ImageVertex = ImageRenderer.Vertex
 
+//extension MTLVertexAttributeDescriptor {
+//    convenience init(fmt: MTLVertexFormat, offset: Int, bufferIndex: Int) {
+//        self.init()
+//        self.format = fmt
+//        self.offset = offset
+//        self.bufferIndex = bufferIndex
+//    }
+//}
+
+//extension MTLVertexDescriptor {
+//    
+//    
+//    override init() {
+//        
+//        attributes[0].offset = 0
+//        attributes[0].format = .float4
+//        attributes[0].bufferIndex = 0
+//    
+//    d.attributes[1].offset = 0
+//    d.attributes[1].format = .float2
+//    vertexDescriptor.attributes[1].bufferIndex = 0
+//    
+//    vertexDescriptor.layouts[0].stepFunction = .perVertex
+//    vertexDescriptor.layouts[0].stride = MemoryLayout<Vertex>.size
+//    
+//    }
+//}
+
+//extension VertexBuffer {
+////    func vertexBuffer(for rect: Rect) -> VertexBuffer<Vertex>? {
+////        return VertexBuffer<Vertex>(device: device, vertices: self.vertices(for: rect))
+////    }
+//
+//}
+
+//func texture(of image: XImage) -> MTLTexture? {
+//    guard let cgImage: CGImage = image.cgImage else { return nil }
+//    var options: [String : NSObject] = [MTKTextureLoaderOptionSRGB: false as NSNumber]
+//    if #available(iOS 10.0, *) {
+//        options[MTKTextureLoaderOptionOrigin] = true as NSNumber
+//    }
+//    return try? device.textureLoader.newTexture(with: cgImage, options: options)
+//}
+//
+//extension MTLTexture {
+//    
+//}
+
+final class VertexDescriptor<Vertex> : MTLVertexDescriptor {
+    override init() {
+        super.init()
+        attributes[0].offset = 0
+        attributes[0].format = .float4
+        attributes[0].bufferIndex = 0
+        
+        attributes[1].offset = 0
+        attributes[1].format = .float2
+        attributes[1].bufferIndex = 0
+        
+        layouts[0].stepFunction = .perVertex
+        layouts[0].stride = MemoryLayout<Vertex>.size
+    }
+}
 //
 //	ImageRenderer
 //
