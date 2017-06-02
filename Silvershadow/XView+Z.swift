@@ -21,16 +21,17 @@ extension XView {
 	}
 
 	func addSubviewToFit(_ view: XView) {
-		view.frame = self.bounds
-		self.addSubview(view)
+		view.frame = bounds
+		addSubview(view)
 		view.translatesAutoresizingMaskIntoConstraints = false
-		view.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-		view.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-		view.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-		view.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+		view.topAnchor.constraint(equalTo: topAnchor).isActive = true
+		view.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+		view.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+		view.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
 	}
 
 	func setBorder(color: XColor?, width: CGFloat) {
+
 		#if os(iOS)
 		self.layer.borderWidth = width
 		self.layer.borderColor = color?.cgColor
@@ -43,8 +44,7 @@ extension XView {
 	#if os(macOS)
 	var backgroundColor: NSColor? {
 		get {
-			guard let backgroundColor = self.layer?.backgroundColor else { return nil }
-			return NSColor(cgColor: backgroundColor)
+            return layer?.backgroundColor.flatMap { NSColor(cgColor: $0) }
 		}
 		set {
 			self.wantsLayer = true // ??

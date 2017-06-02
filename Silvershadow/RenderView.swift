@@ -261,11 +261,7 @@ class RenderView: XView, MTKViewDelegate {
 	}
 
 	var zoomScale: CGFloat {
-		#if os(iOS)
 		return scrollView.zoomScale
-		#elseif os(macOS)
-		return scrollView.magnification
-		#endif
 	}
 
 	var drawingTransform: CGAffineTransform {
@@ -273,7 +269,7 @@ class RenderView: XView, MTKViewDelegate {
 		let targetRect = contentView.convert(self.contentView.bounds, to: self.mtkView)
 		let transform0 = CGAffineTransform(translationX: 0, y: self.contentView.bounds.height).scaledBy(x: 1, y: -1)
 		let transform1 = scene.bounds.transform(to: targetRect)
-		let transform2 = self.mtkView.bounds.transform(to: CGRect(x: -1.0, y: -1.0, width: 2.0, height: 2.0))
+		let transform2 = mtkView.bounds.transform(to: CGRect(x: -1.0, y: -1.0, width: 2.0, height: 2.0))
 		let transform3 = CGAffineTransform.identity.translatedBy(x: 0, y: +1).scaledBy(x: 1, y: -1).translatedBy(x: 0, y: 1)
 		#if os(iOS)
 		let transform = transform1 * transform2 * transform3

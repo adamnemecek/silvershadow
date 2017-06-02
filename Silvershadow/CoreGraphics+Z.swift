@@ -81,7 +81,7 @@ extension CGRect {
 	}
 
 	func transform(to rect: CGRect) -> CGAffineTransform {
-		var t = CGAffineTransform.identity
+        var t : CGAffineTransform = .identity
 		t = t.translatedBy(x: -minX, y: -minY)
 		t = t.scaledBy(x: 1 / width, y: 1 / height)
 		t = t.scaledBy(x: rect.width, y: rect.height)

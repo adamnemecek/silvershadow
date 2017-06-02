@@ -42,7 +42,6 @@ typealias XRGBA = (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
 
     protocol XScrollViewDelegate {}
 
-
     extension NSBezierPath {
 
         func addLine(to point: CGPoint) {
@@ -126,6 +125,12 @@ typealias XRGBA = (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
     extension NSColor {
         var ciColor: CIColor {
             return CIColor(cgColor: cgColor)
+        }
+    }
+
+    extension NSScrollView {
+        var zoomScale : CGFloat {
+            return magnification
         }
     }
     

@@ -36,12 +36,6 @@ import Accelerate
 
 extension MTLTexture {
 
-	#if os(iOS)
-	typealias XImage = UIImage
-	#elseif os(macOS)
-	typealias XImage = NSImage
-	#endif
-
 	var cgImage: CGImage? {
 
 		assert(pixelFormat == .bgra8Unorm)
@@ -71,8 +65,8 @@ extension MTLTexture {
 		// create CGImage with RGBA Flipped Bytes
 		let colorScape = CGColorSpaceCreateDeviceRGB()
 		let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
-		guard let data = CFDataCreate(nil, flippedBytes, length) else { return nil }
-		guard let dataProvider = CGDataProvider(data: data) else { return nil }
+		guard let data = CFDataCreate(nil, flippedBytes, length),
+             let dataProvider = CGDataProvider(data: data) else { return nil }
 		let cgImage = CGImage(width: width, height: height, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: rowBytes,
 					space: colorScape, bitmapInfo: bitmapInfo, provider: dataProvider,
 					decode: nil, shouldInterpolate: true, intent: .defaultIntent)
@@ -80,12 +74,13 @@ extension MTLTexture {
 	}
 
 	var image: XImage? {
-		guard let cgImage = self.cgImage else { return nil }
+        return cgImage.map {
 		#if os(iOS)
-		return UIImage(cgImage: cgImage)
+            return UIImage(cgImage: $0)
 		#elseif os(macOS)
-		return NSImage(cgImage: cgImage, size: CGSize(width: cgImage.width, height: cgImage.height))
+            return NSImage(cgImage: $0, size: CGSize(width: $0.width, height: $0.height))
 		#endif
+        }
 	}
 
 }
