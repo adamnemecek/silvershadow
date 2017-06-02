@@ -35,29 +35,44 @@ class RenderView: XView, MTKViewDelegate {
 
     #if os(iOS)
     override func layoutSubviews() {
-    super.layoutSubviews()
+        super.layoutSubviews()
 
-    sendSubview(toBack: mtkView)
-    bringSubview(toFront: drawView)
-    bringSubview(toFront: scrollView)
+        sendSubview(toBack: mtkView)
+        bringSubview(toFront: drawView)
+        bringSubview(toFront: scrollView)
 
-    if let scene = self.scene {
-    let contentSize = scene.contentSize
-    self.scrollView.contentSize = contentSize
-    //			self.contentView.bounds = CGRect(x: 0, y: 0, width: contentSize.width, height: contentSize.height)
-    let bounds = CGRect(origin: .zero, size: contentSize)
-    let frame = scrollView.convert(bounds, to: contentView)
-    contentView.frame = frame
+        if let scene = self.scene {
+            let contentSize = scene.contentSize
+            self.scrollView.contentSize = contentSize
+            //			self.contentView.bounds = CGRect(x: 0, y: 0, width: contentSize.width, height: contentSize.height)
+            let bounds = CGRect(origin: .zero, size: contentSize)
+            let frame = scrollView.convert(bounds, to: contentView)
+            contentView.frame = frame
+        }
+        else {
+            scrollView.contentSize = bounds.size
+            contentView.bounds = bounds
+        }
+        scrollView.autoresizesSubviews = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.autoresizingMask = [.flexibleRightMargin, .flexibleBottomMargin]
+        setNeedsDisplay()
     }
-    else {
-    scrollView.contentSize = bounds.size
-    contentView.bounds = bounds
-    }
-    scrollView.autoresizesSubviews = false
-    contentView.translatesAutoresizingMaskIntoConstraints = false
-    contentView.autoresizingMask = [.flexibleRightMargin, .flexibleBottomMargin]
-    setNeedsDisplay()
-    }
+
+    private (set) lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView(frame: self.bounds)
+        scrollView.delegate = self
+        scrollView.backgroundColor = .clear
+        scrollView.maximumZoomScale = 4.0
+        scrollView.minimumZoomScale = 1.0
+        scrollView.autoresizesSubviews = false
+        scrollView.delaysContentTouches = false
+        scrollView.panGestureRecognizer.minimumNumberOfTouches = 2
+        self.addSubviewToFit(scrollView)
+        scrollView.addSubview(self.contentView)
+        self.contentView.frame = self.bounds
+        return scrollView
+    }()
     #endif
 
     #if os(macOS)
@@ -75,37 +90,7 @@ class RenderView: XView, MTKViewDelegate {
         contentView.autoresizingMask = [.viewMaxXMargin, /*.viewMinYMargin,*/ .viewMaxYMargin]
         setNeedsDisplay()
     }
-    #endif
 
-    private (set) lazy var mtkView: MTKView = {
-        let mtkView = MTKView(frame: self.bounds)
-        mtkView.device = MTLCreateSystemDefaultDevice()!
-        mtkView.colorPixelFormat = .`default`
-        mtkView.delegate = self
-        self.addSubviewToFit(mtkView)
-        mtkView.enableSetNeedsDisplay = true
-        //		mtkView.isPaused = true
-        return mtkView
-    }()
-
-    #if os(iOS)
-    private (set) lazy var scrollView: UIScrollView = {
-    let scrollView = UIScrollView(frame: self.bounds)
-    scrollView.delegate = self
-    scrollView.backgroundColor = .clear
-    scrollView.maximumZoomScale = 4.0
-    scrollView.minimumZoomScale = 1.0
-    scrollView.autoresizesSubviews = false
-    scrollView.delaysContentTouches = false
-    scrollView.panGestureRecognizer.minimumNumberOfTouches = 2
-    self.addSubviewToFit(scrollView)
-    scrollView.addSubview(self.contentView)
-    self.contentView.frame = self.bounds
-    return scrollView
-    }()
-    #endif
-
-    #if os(macOS)
     private (set) lazy var scrollView: NSScrollView = {
         let scrollView = NSScrollView(frame: self.bounds)
         scrollView.hasVerticalScroller = true
@@ -134,9 +119,6 @@ class RenderView: XView, MTKViewDelegate {
 
         return scrollView
     }()
-    #endif
-
-    #if os(macOS)
 
     var lastCall = Date()
 
@@ -146,7 +128,19 @@ class RenderView: XView, MTKViewDelegate {
         //		self.drawView.setNeedsDisplay()
         self.mtkView.setNeedsDisplay()
     }
+
     #endif
+
+    private (set) lazy var mtkView: MTKView = {
+        let mtkView = MTKView(frame: self.bounds)
+        mtkView.device = MTLCreateSystemDefaultDevice()!
+        mtkView.colorPixelFormat = .`default`
+        mtkView.delegate = self
+        self.addSubviewToFit(mtkView)
+        mtkView.enableSetNeedsDisplay = true
+        //		mtkView.isPaused = true
+        return mtkView
+    }()
 
     private (set) lazy var drawView: RenderDrawView = {
         let drawView = RenderDrawView(frame: self.bounds)
@@ -177,9 +171,9 @@ class RenderView: XView, MTKViewDelegate {
 
     #if os(iOS)
     override func setNeedsDisplay() {
-    super.setNeedsDisplay()
-    self.mtkView.setNeedsDisplay()
-    self.drawView.setNeedsDisplay()
+        super.setNeedsDisplay()
+        self.mtkView.setNeedsDisplay()
+        self.drawView.setNeedsDisplay()
     }
     #elseif os(macOS)
     override func setNeedsDisplay() {
@@ -267,41 +261,41 @@ class RenderView: XView, MTKViewDelegate {
         #endif
         return transform
     }
-    
+
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
     }
-    
+
     // MARK: -
-    
+
     #if os(iOS)
     var minimumNumberOfTouchesToScroll: Int {
-    get { return self.scrollView.panGestureRecognizer.minimumNumberOfTouches }
-    set { self.scrollView.panGestureRecognizer.minimumNumberOfTouches = newValue }
+        get { return self.scrollView.panGestureRecognizer.minimumNumberOfTouches }
+        set { self.scrollView.panGestureRecognizer.minimumNumberOfTouches = newValue }
     }
-    
+
     var scrollEnabled: Bool {
-    get { return self.scrollView.isScrollEnabled }
-    set { self.scrollView.isScrollEnabled = newValue }
+        get { return self.scrollView.isScrollEnabled }
+        set { self.scrollView.isScrollEnabled = newValue }
     }
-    
+
     var delaysContentTouches: Bool {
-    get { return self.scrollView.delaysContentTouches }
-    set { self.scrollView.delaysContentTouches = newValue }
+        get { return self.scrollView.delaysContentTouches }
+        set { self.scrollView.delaysContentTouches = newValue }
     }
     #endif
 }
 
 #if os(iOS)
     extension RenderView: UIScrollViewDelegate {
-        
+
         func viewForZooming(in scrollView: UIScrollView) -> UIView? {
             return self.contentView
         }
-        
+
         func scrollViewDidZoom(_ scrollView: UIScrollView) {
             self.setNeedsDisplay()
         }
-        
+
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
             self.setNeedsDisplay()
         }
