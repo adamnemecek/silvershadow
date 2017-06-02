@@ -88,7 +88,7 @@ class ColorRenderer: Renderer {
 		let commandBuffer = context.makeCommandBuffer()
 
 		let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: context.renderPassDescriptor)
-		encoder.setRenderPipelineState(self.renderPipelineState)
+		encoder.setRenderPipelineState(renderPipelineState)
 		encoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, at: 0)
 		encoder.setVertexBuffer(uniformsBuffer, offset: 0, at: 1)
 		
@@ -118,7 +118,7 @@ class ColorRenderer: Renderer {
 	}
 
 	func render(context: RenderContext, rect: Rect, color: XColor) {
-		guard let vertexBuffer = self.vertexBuffer(for: self.vertices(for: rect, color: color)) else { return }
+		guard let vertexBuffer = vertexBuffer(for: vertices(for: rect, color: color)) else { return }
 		render(context: context, vertexBuffer: vertexBuffer)
 	}
 

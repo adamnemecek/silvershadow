@@ -130,7 +130,7 @@ class PointsRenderer: Renderer {
     }()
 
     func vertexBuffer(for vertices: [Vertex], capacity: Int? = nil) -> VertexBuffer<Vertex> {
-        return VertexBuffer(device: self.device, vertices: vertices, capacity: capacity)
+        return VertexBuffer(device: device, vertices: vertices, capacity: capacity)
     }
 
     func render(context: RenderContext, texture: MTLTexture, vertexBuffer: VertexBuffer<Vertex>) {
@@ -140,13 +140,13 @@ class PointsRenderer: Renderer {
 
         let commandBuffer = context.makeCommandBuffer()
         let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: context.renderPassDescriptor)
-        encoder.setRenderPipelineState(self.renderPipelineState)
+        encoder.setRenderPipelineState(renderPipelineState)
 
         encoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, at: 0)
         encoder.setVertexBuffer(uniformsBuffer, offset: 0, at: 1)
 
         encoder.setFragmentTexture(texture, at: 0)
-        encoder.setFragmentSamplerState(self.colorSamplerState, at: 0)
+        encoder.setFragmentSamplerState(colorSamplerState, at: 0)
 
         encoder.drawPrimitives(type: .point, vertexStart: 0, vertexCount: vertexBuffer.count)
         encoder.endEncoding()

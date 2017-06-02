@@ -75,27 +75,33 @@ public extension CGPath {
 	var pathElements: [PathElement] {
 		var elements = Elements()
 
+
 		self.apply(info: &elements) { (info, element) -> () in
-			guard let infoPointer = UnsafeMutablePointer<Elements>(OpaquePointer(info)) else { return }
-			switch element.pointee.type {
+
+            var e : PathElement
+
+			guard let infoPointer = (info.map { $0.assumingMemoryBound(to: Elements.self) }) else { return }
+
+            switch element.pointee.type {
 			case .moveToPoint:
 				let pt = element.pointee.points[0]
-				infoPointer.pointee.pathElements.append(.moveTo(pt))
+				e = .moveTo(pt)
 			case .addLineToPoint:
 				let pt = element.pointee.points[0]
-				infoPointer.pointee.pathElements.append(.lineTo(pt))
+				e = .lineTo(pt)
 			case .addQuadCurveToPoint:
 				let pt1 = element.pointee.points[0]
 				let pt2 = element.pointee.points[1]
-				infoPointer.pointee.pathElements.append(.quadCurveTo(pt1, pt2))
+				e = .quadCurveTo(pt1, pt2)
 			case .addCurveToPoint:
 				let pt1 = element.pointee.points[0]
 				let pt2 = element.pointee.points[1]
 				let pt3 = element.pointee.points[2]
-				infoPointer.pointee.pathElements.append(.curveTo(pt1, pt2, pt3))
+				e = .curveTo(pt1, pt2, pt3)
 			case .closeSubpath:
-				infoPointer.pointee.pathElements.append(.closeSubpath)
+				e = .closeSubpath
 			}
+            infoPointer.pointee.pathElements.append(e)
 		}
 
 		let pathelements = elements.pathElements

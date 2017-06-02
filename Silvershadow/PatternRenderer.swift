@@ -166,7 +166,7 @@ class PatternRenderer: Renderer {
 		let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: context.renderPassDescriptor)
 		encoder.pushDebugGroup("pattern filling")
 		
-		encoder.setRenderPipelineState(self.renderPipelineState)
+		encoder.setRenderPipelineState(renderPipelineState)
 
 		encoder.setFrontFacing(.clockwise)
 //		commandEncoder.setCullMode(.back)
@@ -175,8 +175,8 @@ class PatternRenderer: Renderer {
 
 		encoder.setFragmentTexture(context.shadingTexture, at: 0)
 		encoder.setFragmentTexture(context.brushPattern, at: 1)
-		encoder.setFragmentSamplerState(self.shadingSamplerState, at: 0)
-		encoder.setFragmentSamplerState(self.patternSamplerState, at: 1)
+		encoder.setFragmentSamplerState(shadingSamplerState, at: 0)
+		encoder.setFragmentSamplerState(patternSamplerState, at: 1)
 		encoder.setFragmentBuffer(uniformsBuffer, offset: 0, at: 0)
 
 		encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexes.count)

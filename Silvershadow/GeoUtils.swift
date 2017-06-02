@@ -112,14 +112,14 @@ struct Point: Hashable, CustomStringConvertible {
 	}
 
 	func angle(to: Point) -> Float {
-		return atan2(to.y - self.y, to.x - self.x)
+		return atan2(to.y - y, to.x - x)
 	}
 
 	func angle(from: Point) -> Float {
-		return atan2(self.y - from.y, self.x - from.x)
+		return atan2(y - from.y, x - from.x)
 	}
 
-	var hashValue: Int { return self.x.hashValue &- self.y.hashValue }
+	var hashValue: Int { return x.hashValue &- y.hashValue }
 
 	static func == (lhs: Point, rhs: Point) -> Bool {
 		return lhs.x == rhs.y && lhs.y == rhs.y

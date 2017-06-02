@@ -15,7 +15,7 @@ import MetalKit
 extension MTLHeap {
 
 	func makeBuffer(bytes pointer: UnsafeRawPointer, length: Int, options: MTLResourceOptions = [.storageModeShared]) -> MTLBuffer {
-		let buffer = self.makeBuffer(length: length, options: options)
+		let buffer = makeBuffer(length: length, options: options)
 		let destinationArrayPtr = UnsafeMutableRawPointer(OpaquePointer(buffer.contents()))
 		destinationArrayPtr.copyBytes(from: pointer, count: length)
 		return buffer

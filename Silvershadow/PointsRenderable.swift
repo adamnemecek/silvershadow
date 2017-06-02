@@ -46,7 +46,7 @@ class PointsRenderable: Renderable {
 	
 	func append(_ vertices: [PointVertex]) {
 		self.vertices += vertices
-		if self.vertices.count < vertexBuffer.count {
+		if vertices.count < vertexBuffer.count {
 			self.vertexBuffer.append(vertices)
 		}
 		else {
