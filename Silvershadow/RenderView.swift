@@ -65,20 +65,16 @@ class RenderView: XView, MTKViewDelegate {
 	override func layout() {
 		super.layout()
 		
-		self.sendSubview(toBack: self.mtkView)
-		self.bringSubview(toFront: self.drawView)
-		self.bringSubview(toFront: self.scrollView)
+		sendSubview(toBack: mtkView)
+		bringSubview(toFront: drawView)
+		bringSubview(toFront: scrollView)
 
-		if let renderableScene = self.scene {
-			let contentSize = renderableScene.contentSize
-			self.scrollView.documentView?.frame = CGRect(0, 0, contentSize.width, contentSize.height)
-		}
-		else {
-			self.scrollView.documentView?.frame = CGRect(0, 0, self.bounds.width, self.bounds.height)
-		}
-		self.contentView.translatesAutoresizingMaskIntoConstraints = false
-		self.contentView.autoresizingMask = [.viewMaxXMargin, /*.viewMinYMargin,*/ .viewMaxYMargin]
-		self.setNeedsDisplay()
+        let size = scene?.contentSize ?? bounds.size
+        scrollView.documentView?.frame = CGRect(origin: .zero, size: size)
+
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+		contentView.autoresizingMask = [.viewMaxXMargin, /*.viewMinYMargin,*/ .viewMaxYMargin]
+		setNeedsDisplay()
 	}
 	#endif
 
@@ -131,8 +127,8 @@ class RenderView: XView, MTKViewDelegate {
 
 		// posting notification when zoomed, scrolled or resized
 		typealias T = RenderView
-		NotificationCenter.default.addObserver(self, selector: #selector(T.scrollContentDidChange(_:)),
-					name: NSNotification.Name.NSViewBoundsDidChange, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(T.scrollContentDidChange),
+					name: .NSViewBoundsDidChange, object: nil)
 		scrollView.allowsMagnification = true
 		scrollView.maxMagnification = 4
 		scrollView.minMagnification = 1
@@ -164,7 +160,7 @@ class RenderView: XView, MTKViewDelegate {
 	private (set) lazy var contentView: RenderContentView = {
 		let renderableContentView = RenderContentView(frame: self.bounds)
 		renderableContentView.renderView = self
-		renderableContentView.backgroundColor = XColor.clear
+		renderableContentView.backgroundColor = .clear
 		renderableContentView.translatesAutoresizingMaskIntoConstraints = false
 		#if os(iOS)
 		renderableContentView.isUserInteractionEnabled = true
@@ -173,7 +169,7 @@ class RenderView: XView, MTKViewDelegate {
 	}()
 
 	var device: MTLDevice {
-		return self.mtkView.device!
+		return mtkView.device!
 	}
 
 	private (set) var commandQueue: MTLCommandQueue?
@@ -191,17 +187,11 @@ class RenderView: XView, MTKViewDelegate {
 		self.mtkView.setNeedsDisplay()
 		self.drawView.setNeedsDisplay()
 	}
-	#endif
 
-	#if os(macOS)
-	override var isFlipped: Bool {
+    override var isFlipped: Bool {
 		return true
 	}
-	#endif
 
-	// 
-	
-	#if os(macOS)
 	override func draw(_ dirtyRect: NSRect) {
 		super.draw(dirtyRect)
 	}
@@ -265,9 +255,9 @@ class RenderView: XView, MTKViewDelegate {
 	}
 
 	var drawingTransform: CGAffineTransform {
-		guard let scene = self.scene else { return CGAffineTransform.identity }
-		let targetRect = contentView.convert(self.contentView.bounds, to: self.mtkView)
-		let transform0 = CGAffineTransform(translationX: 0, y: self.contentView.bounds.height).scaledBy(x: 1, y: -1)
+		guard let scene = self.scene else { return .identity }
+		let targetRect = contentView.convert(contentView.bounds, to: mtkView)
+		let transform0 = CGAffineTransform(translationX: 0, y: contentView.bounds.height).scaledBy(x: 1, y: -1)
 		let transform1 = scene.bounds.transform(to: targetRect)
 		let transform2 = mtkView.bounds.transform(to: CGRect(x: -1.0, y: -1.0, width: 2.0, height: 2.0))
 		let transform3 = CGAffineTransform.identity.translatedBy(x: 0, y: +1).scaledBy(x: 1, y: -1).translatedBy(x: 0, y: 1)

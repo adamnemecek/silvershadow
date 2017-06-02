@@ -16,8 +16,7 @@ import Cocoa
 extension XView {
 
 	func transform(to view: XView) -> CGAffineTransform {
-		let targetRect = self.convert(self.bounds, to: view)
-		return view.bounds.transform(to: targetRect)
+		return view.bounds.transform(to: convert(bounds, to: view))
 	}
 
 	func addSubviewToFit(_ view: XView) {
@@ -47,8 +46,8 @@ extension XView {
             return layer?.backgroundColor.flatMap { NSColor(cgColor: $0) }
 		}
 		set {
-			self.wantsLayer = true // ??
-			self.layer?.backgroundColor = newValue?.cgColor
+			wantsLayer = true // ??
+			layer?.backgroundColor = newValue?.cgColor
 		}
 	}
 	#endif
