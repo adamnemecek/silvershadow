@@ -47,7 +47,7 @@ class SampleScene: Scene {
 		return self.samplePoints.map { CGPoint(x: $0.0, y: $0.1).applying(transform) }
 	}
 
-	func samplePath(_ transform: CGAffineTransform = CGAffineTransform.identity) -> CGPath {
+	func samplePath(_ transform: CGAffineTransform = .identity) -> CGPath {
 		let cgPath = CGMutablePath()
 		var lastPoint: CGPoint?
 		for point in self.samplePoints(transform) {

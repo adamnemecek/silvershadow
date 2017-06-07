@@ -28,6 +28,20 @@ typealias XRGBA = (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
         }
     }
 
+    extension UIColor {
+        var rgba: XRGBA {
+            var (r, g, b, a) = (CGFloat(0), CGFloat(0), CGFloat(0), CGFloat(0))
+            getRed(&r, green: &g, blue: &b, alpha: &a)
+            return (r, g, b, a)
+        }
+    }
+
+    extension NSMutableParagraphStyle {
+        static func makeParagraphStyle() -> NSMutableParagraphStyle {
+            return NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
+        }
+    }
+
 
 #elseif os(macOS)
 
@@ -107,7 +121,6 @@ typealias XRGBA = (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
                 self.subviews = subviews
             }
         }
-
     }
 
     extension NSImage {
@@ -132,6 +145,10 @@ typealias XRGBA = (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
         var ciColor: CIColor {
             return CIColor(cgColor: cgColor)
         }
+
+        var rgba : XRGBA {
+            return CIColor(color: self).map { ($0.red, $0.green, $0.blue, $0.alpha) }!
+        }
     }
 
     extension NSScrollView {
@@ -139,37 +156,14 @@ typealias XRGBA = (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
             return magnification
         }
     }
-    
+
+    extension NSMutableParagraphStyle {
+        static func makeParagraphStyle() -> NSMutableParagraphStyle {
+            return NSParagraphStyle.default().mutableCopy() as! NSMutableParagraphStyle
+        }
+    }
+
 #endif
 
-extension XColor {
-    
-    var rgba: XRGBA {
-        var (r, g, b, a) = (CGFloat(0), CGFloat(0), CGFloat(0), CGFloat(0))
-        #if os(iOS)
-            self.getRed(&r, green: &g, blue: &b, alpha: &a)
-            return (r, g, b, a)
-        #elseif os(macOS)
-            let ciColor = CIColor(color: self)!
-            return (ciColor.red, ciColor.green, ciColor.blue, ciColor.alpha)
-        #endif
-    }
-    
-    convenience init(rgba: XRGBA) {
-        self.init(red: rgba.r, green: rgba.g, blue: rgba.b, alpha: rgba.a)
-    }
-    
-}
-
-extension NSMutableParagraphStyle {
-    
-    static func makeParagraphStyle() -> NSMutableParagraphStyle {
-        #if os(iOS)
-            return NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
-        #elseif os(macOS)
-            return NSParagraphStyle.default().mutableCopy() as! NSMutableParagraphStyle
-        #endif
-    }
-}
 
 

@@ -34,10 +34,8 @@ class RenderContentView: XView {
 	override func layout() {
 		super.layout()
 	}
-	#endif
 
-	#if os(macOS)
-	override var isFlipped: Bool {
+    override var isFlipped: Bool {
 		return true
 	}
 	#endif

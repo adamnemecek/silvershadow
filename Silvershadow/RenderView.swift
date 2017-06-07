@@ -12,11 +12,8 @@
     import Cocoa
 #endif
 
-import Metal
 import MetalKit
 import GLKit
-
-
 
 class RenderView: XView, MTKViewDelegate {
 

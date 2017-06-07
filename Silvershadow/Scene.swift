@@ -16,7 +16,7 @@ class Scene {
 	let device: MTLDevice
 	var contentSize: CGSize
 
-	var backgroundColor: XColor = XColor.white {
+	var backgroundColor: XColor = .white {
 		didSet { self.setNeedsDisplay() }
 	}
 

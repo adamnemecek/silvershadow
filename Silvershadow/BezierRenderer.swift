@@ -235,7 +235,7 @@ class BezierRenderer: Renderer {
 	func render(context: RenderContext, cgPaths: [CGPath]) {
 		guard cgPaths.count > 0 else { return }
 
-		var elementsArray = [[BezierPathElement]]()
+        var elementsArray : [[BezierPathElement]] = []
 		let (w1, w2) = (8, 8)
 
 		let segments = lineSegments(cgPaths: cgPaths)

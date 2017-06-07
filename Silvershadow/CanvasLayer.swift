@@ -15,9 +15,9 @@ class CanvasLayer: Equatable {
 	weak var canvas: Canvas?
 	var isHidden: Bool = false
 	
-	var device: MTLDevice? { return self.canvas?.device }
+	var device: MTLDevice? { return canvas?.device }
 	
-	var contentSize: CGSize? { return self.canvas?.contentSize }
+	var contentSize: CGSize? { return canvas?.contentSize }
 	
 	var bounds: CGRect? {
         return contentSize.map { CGRect(origin: .zero, size: $0) }

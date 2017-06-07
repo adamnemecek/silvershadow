@@ -7,9 +7,7 @@
 //
 
 import Foundation
-import Metal
 import MetalKit
-
 
 #if os(iOS)
 extension MTLHeap {
