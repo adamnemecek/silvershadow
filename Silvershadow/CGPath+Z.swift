@@ -33,7 +33,7 @@ import CoreGraphics
 //	PathElement
 //
 
-public enum PathElement {
+public enum PathElement : Equatable {
 	case moveTo(CGPoint)
 	case lineTo(CGPoint)
 	case quadCurveTo(CGPoint, CGPoint)
@@ -75,7 +75,6 @@ public extension CGPath {
 	var pathElements: [PathElement] {
 		var elements = Elements()
 
-
 		self.apply(info: &elements) { (info, element) -> () in
 
             var e : PathElement
@@ -104,17 +103,91 @@ public extension CGPath {
             infoPointer.pointee.pathElements.append(e)
 		}
 
-		let pathelements = elements.pathElements
-		return pathelements
+		return elements.pathElements
 	}
-}
 
+    struct Vertex {
+        var x: Float
+        var y: Float
+        var width: Float
+        var unused: Float = 0
 
-//
-//
-//
+        init(x: Float, y: Float, width: Float) {
+            self.x = x
+            self.y = y
+            self.width = width
+        }
 
-extension CGPath {
+        init(_ point: Point, _ width: Float) {
+            self.x = point.x
+            self.y = point.y
+            self.width = width
+        }
+    }
+
+    func vertexes(width: CGFloat) -> [Vertex] {
+        var startPoint: CGPoint?
+        var lastPoint: CGPoint?
+
+        return pathElements.flatMap {
+            switch $0 {
+            case let .moveTo(p1):
+                startPoint = p1
+                lastPoint = p1
+
+            case let .lineTo(p1):
+                guard let p0 = lastPoint else { return nil }
+                lastPoint = p1
+
+                let n = Int((p1 - p0).length)
+                for i in 0 ..< n {
+                    let t = CGFloat(i) / CGFloat(n)
+                    let q = p0 + (p1 - p0) * t
+                    return Vertex(Point(q), Float(width))
+                }
+
+            case let .quadCurveTo(p1, p2):
+                guard let p0 = lastPoint else { return nil }
+                lastPoint = p2
+
+                let n = Int(ceil(CGPath.quadraticCurveLength(p0, p1, p2)))
+                for i in 0 ..< n {
+                    let t = CGFloat(i) / CGFloat(n)
+                    let q1 = p0 + (p1 - p0) * t
+                    let q2 = p1 + (p2 - p1) * t
+                    let r = q1 + (q2 - q1) * t
+                    return Vertex(Point(r), Float(width))
+                }
+
+            case let .curveTo(p1, p2, p3):
+                guard let p0 = lastPoint else { return nil }
+                lastPoint = p3
+
+                let n = Int(ceil(CGPath.approximateCubicCurveLength(p0, p1, p2, p3)))
+                for i in 0 ..< n {
+                    let t = CGFloat(i) / CGFloat(n)
+                    let q1 = p0 + (p1 - p0) * t
+                    let q2 = p1 + (p2 - p1) * t
+                    let q3 = p2 + (p3 - p2) * t
+                    let r1 = q1 + (q2 - q1) * t
+                    let r2 = q2 + (q3 - q2) * t
+                    let s = r1 + (r2 - r1) * t
+                    return Vertex(Point(s), Float(width))
+                }
+
+            case .closeSubpath:
+                guard let p0 = lastPoint, let p1 = startPoint else { return nil }
+
+                let n = Int((p1 - p0).length)
+                for i in 0 ..< n {
+                    let t = CGFloat(i) / CGFloat(n)
+                    let q = p0 + (p1 - p0) * t
+                    return Vertex(Point(q), Float(width))
+                }
+            }
+            return nil
+        }
+    }
 
 	static func quadraticCurveLength(_ p0: CGPoint, _ p1: CGPoint, _ p2: CGPoint) -> CGFloat {
 

@@ -181,9 +181,7 @@ extension RenderContext {
 	}
 
 	func render(image: XImage?, in rect: Rect) {
-		guard let image = image else { return }
-		let device = self.device
-		guard let texture = device.texture(of: image) else { return }
+		guard let image = image, let texture = device.texture(of: image) else { return }
 		self.render(texture: texture, in: rect)
 	}
 

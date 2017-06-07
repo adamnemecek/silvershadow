@@ -39,29 +39,9 @@ extension MTLSamplerDescriptor {
 
 class PointsRenderer: Renderer {
 
-    typealias VertexType = Vertex
+    typealias Vertex = CGPath.Vertex
 
     // TODO: needs refactoring
-
-    struct Vertex {
-        var x: Float
-        var y: Float
-        var width: Float
-        var unused: Float = 0
-
-        init(x: Float, y: Float, width: Float) {
-            self.x = x
-            self.y = y
-            self.width = width
-        }
-
-        init(_ point: Point, _ width: Float) {
-            self.x = point.x
-            self.y = point.y
-            self.width = width
-        }
-
-    }
 
     struct Uniforms {
         var transform: GLKMatrix4
@@ -173,72 +153,6 @@ class PointsRenderer: Renderer {
         return (0 ..< numberOfPoints).map {
             Vertex(from + step * Float($0), width)
         }
-    }
-
-    class func vertexes(of cgPath: CGPath, width: CGFloat) -> [Vertex] {
-        var vertexes = [Vertex]()
-        var startPoint: CGPoint?
-        var lastPoint: CGPoint?
-
-        for pathElement in cgPath.pathElements {
-            switch pathElement {
-            case let .moveTo(p1):
-                startPoint = p1
-                lastPoint = p1
-
-            case let .lineTo(p1):
-                guard let p0 = lastPoint else { continue }
-                lastPoint = p1
-
-                let n = Int((p1 - p0).length)
-                for i in 0 ..< n {
-                    let t = CGFloat(i) / CGFloat(n)
-                    let q = p0 + (p1 - p0) * t
-                    vertexes.append(Vertex(Point(q), Float(width)))
-                }
-
-            case let .quadCurveTo(p1, p2):
-                guard let p0 = lastPoint else { continue }
-                lastPoint = p2
-
-                let n = Int(ceil(CGPath.quadraticCurveLength(p0, p1, p2)))
-                for i in 0 ..< n {
-                    let t = CGFloat(i) / CGFloat(n)
-                    let q1 = p0 + (p1 - p0) * t
-                    let q2 = p1 + (p2 - p1) * t
-                    let r = q1 + (q2 - q1) * t
-                    vertexes.append(Vertex(Point(r), Float(width)))
-                }
-
-            case let .curveTo(p1, p2, p3):
-                guard let p0 = lastPoint else { continue }
-                lastPoint = p3
-
-                let n = Int(ceil(CGPath.approximateCubicCurveLength(p0, p1, p2, p3)))
-                for i in 0 ..< n {
-                    let t = CGFloat(i) / CGFloat(n)
-                    let q1 = p0 + (p1 - p0) * t
-                    let q2 = p1 + (p2 - p1) * t
-                    let q3 = p2 + (p3 - p2) * t
-                    let r1 = q1 + (q2 - q1) * t
-                    let r2 = q2 + (q3 - q2) * t
-                    let s = r1 + (r2 - r1) * t
-                    vertexes.append(Vertex(Point(s), Float(width)))
-                }
-
-            case .closeSubpath:
-                guard let p0 = lastPoint, let p1 = startPoint else { continue }
-
-                let n = Int((p1 - p0).length)
-                for i in 0 ..< n {
-                    let t = CGFloat(i) / CGFloat(n)
-                    let q = p0 + (p1 - p0) * t
-                    vertexes.append(Vertex(Point(q), Float(width)))
-                }
-            }
-        }
-
-        return vertexes
     }
 
 }

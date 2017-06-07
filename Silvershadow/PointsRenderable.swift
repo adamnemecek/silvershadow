@@ -36,7 +36,7 @@ class PointsRenderable: Renderable {
 	init?(device: MTLDevice, texture: MTLTexture, cgPath: CGPath, width: CGFloat) {
 		self.device = device
 		self.texture = texture
-		self.vertices = PointsRenderer.vertexes(of: cgPath, width: width)
+		self.vertices = cgPath.vertexes(width: width)
 	}
 
 	
