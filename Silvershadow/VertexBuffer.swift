@@ -15,14 +15,16 @@ import MetalKit
 
 class VertexBuffer<T> {
 
-	let device: MTLDevice
+    var device: MTLDevice {
+        return buffer.device
+    }
+
 	private(set) var buffer: MTLBuffer
 	var count: Int
 	var capacity: Int
 
 	init(device: MTLDevice, vertices: [T], capacity: Int? = nil) {
 		assert(vertices.count <= capacity ?? vertices.count)
-		self.device = device
 		self.count = vertices.count
 		let capacity = capacity ?? vertices.count
 		let length = MemoryLayout<T>.stride * capacity
@@ -82,28 +84,6 @@ class VertexBuffer<T> {
 		return (0 ..< count).map { vertexArray[$0] }
 	}
 
-}
-
-
-extension VertexBuffer : Collection {
-    typealias Index = Int
-
-    var startIndex : Index {
-        return 0
-    }
-
-    var endIndex : Index {
-        return count
-    }
-
-    subscript(index: Index) -> T {
-        //return content[index]
-        fatalError()
-    }
-
-    func index(after i: Index) -> Index {
-        return i + 1
-    }
 }
 
 

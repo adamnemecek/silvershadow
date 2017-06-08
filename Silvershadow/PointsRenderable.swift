@@ -19,7 +19,10 @@ class PointsRenderable: Renderable {
 
 	typealias RendererType = PointsRenderer
 
-	let device: MTLDevice
+    var device: MTLDevice {
+        return texture.device
+    }
+
 	var texture: MTLTexture
 	var vertices: [PointVertex]
 
@@ -28,13 +31,11 @@ class PointsRenderable: Renderable {
 	}()
 
 	init?(device: MTLDevice, texture: MTLTexture, vertices: [PointVertex]) {
-		self.device = device
 		self.texture = texture
 		self.vertices = vertices
 	}
 
 	init?(device: MTLDevice, texture: MTLTexture, cgPath: CGPath, width: CGFloat) {
-		self.device = device
 		self.texture = texture
 		self.vertices = cgPath.vertexes(width: width)
 	}
