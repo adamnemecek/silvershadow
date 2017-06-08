@@ -40,7 +40,7 @@ extension MTLDevice {
 	}
 
     func makeSamplerState() -> MTLSamplerState {
-        return makeSamplerState(descriptor: .`default`)
+        return makeSamplerState()
     }
 
 	func texture(named name: String) -> MTLTexture? {

@@ -97,7 +97,7 @@ class ColorRenderer: Renderer {
 	}()
 
 	lazy var colorSamplerState: MTLSamplerState = {
-		return self.device.makeSamplerState(descriptor: .`default`)
+		return self.device.makeSamplerState()
 	}()
 
 	func render(context: RenderContext, vertexBuffer: VertexBuffer<Vertex>) {

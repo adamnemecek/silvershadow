@@ -106,7 +106,7 @@ class PointsRenderer: Renderer {
     }()
 
     lazy var colorSamplerState: MTLSamplerState = {
-        return self.device.makeSamplerState(descriptor: .`default`)
+        return self.device.makeSamplerState()
     }()
 
     func vertexBuffer(for vertices: [Vertex], capacity: Int? = nil) -> VertexBuffer<Vertex> {

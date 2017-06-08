@@ -95,7 +95,7 @@ class ImageRenderer: Renderer {
     }()
 
     lazy var colorSamplerState: MTLSamplerState = {
-        return self.device.makeSamplerState(descriptor: .`default`)
+        return self.device.makeSamplerState()
     }()
 
     func vertexBuffer(for vertices: [Vertex]) -> VertexBuffer<Vertex>? {
