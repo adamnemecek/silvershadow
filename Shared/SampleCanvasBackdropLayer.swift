@@ -61,8 +61,8 @@ class SampleCanvasBackdropLayer: CanvasLayer {
 		self.imageRenderable?.render(context: context)
 
         let bezierRenderer : BezierRenderer = device.renderer()
-		context.brushPattern = self.brushPatternTexture
-		bezierRenderer.render(context: context, cgPaths: [self.samplePath()])
+		context.brushPattern = brushPatternTexture
+		bezierRenderer.render(context: context, cgPaths: [samplePath()])
 	}
 
 }

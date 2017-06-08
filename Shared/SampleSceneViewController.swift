@@ -21,11 +21,9 @@ class SampleSceneViewController: XViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
-		let device = self.renderView.device
 		let contentSize = CGSize(2048, 1024)
 
-		self.sampleScene = SampleScene(device: device, contentSize: contentSize)
+		self.sampleScene = SampleScene(device: renderView.device, contentSize: contentSize)
 		self.renderView.scene = self.sampleScene
 	}
 
