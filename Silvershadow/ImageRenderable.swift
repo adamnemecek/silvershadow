@@ -19,7 +19,10 @@ class ImageRenderable: Renderable {
 
 	typealias RendererType = ImageRenderer
 
-	let device: MTLDevice
+    var device: MTLDevice {
+        return texture.device
+    }
+
     var transform : GLKMatrix4 = .identity
 
 	var image: XImage
@@ -33,7 +36,6 @@ class ImageRenderable: Renderable {
 
 	init?(device: MTLDevice, image: XImage, frame: Rect) {
 		guard let texture = device.texture(of: image) else { return nil }
-		self.device = device
 		self.image = image
 		self.frame = frame
 		self.texture = texture
