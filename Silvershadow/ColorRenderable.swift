@@ -17,27 +17,23 @@ class ColorRectRenderable: Renderable {
 	typealias RendererType = ColorRenderer
 
 	let device: MTLDevice
-	lazy var vertexBuffer: VertexBuffer<ColorVertex> = {
-		let renderer = self.renderer
-		let vertices = renderer.vertices(for: self.frame, color: self.color)
-		return renderer.vertexBuffer(for: vertices)!
-	}()
+	var vertexBuffer: VertexBuffer<ColorVertex>
+
 	var frame: Rect
 	var color: XColor
 	
-	init?(device: MTLDevice, frame: Rect, color: XColor) {
+	init(device: MTLDevice, frame: Rect, color: XColor) {
 		self.device = device
 		self.frame = frame
 		self.color = color
-		let vertices = renderer.vertices(for: frame, color: color)
-		guard let vertexBuffer = renderer.vertexBuffer(for: vertices) else { return nil }
-		self.vertexBuffer = vertexBuffer
+        let vertices = frame.vertices(color: color)
+
+        self.vertexBuffer = VertexBuffer(device: device, vertices: vertices)
 	}
 
 	func render(context: RenderContext) {
 		self.renderer.render(context: context, vertexBuffer: vertexBuffer)
 	}
-
 }
 
 
@@ -52,7 +48,7 @@ class ColorTriangleRenderable: Renderable {
 
 	lazy var vertexBuffer: VertexBuffer<ColorVertex> = {
 		let vertices: [ColorVertex] = [ self.point1, self.point2, self.point3 ]
-		return self.renderer.vertexBuffer(for: vertices)!
+        return VertexBuffer(device: self.device, vertices: vertices)
 	}()
 	
 	init?(device: MTLDevice, point1: ColorVertex, point2: ColorVertex, point3: ColorVertex) {

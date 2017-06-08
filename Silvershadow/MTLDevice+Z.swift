@@ -39,6 +39,10 @@ extension MTLDevice {
         return image.cgImage.flatMap { self.texture(of: $0) }
 	}
 
+    func makeSamplerState() -> MTLSamplerState {
+        return makeSamplerState(descriptor: .`default`)
+    }
+
 	func texture(named name: String) -> MTLTexture? {
 		var options = [String: NSObject]()
 		options[MTKTextureLoaderOptionSRGB] = false as NSNumber

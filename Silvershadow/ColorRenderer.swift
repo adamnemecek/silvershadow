@@ -13,6 +13,25 @@ import GLKit
 
 typealias ColorVertex = ColorRenderer.Vertex
 
+
+extension Rect {
+    typealias Vertex = ColorRenderer.Vertex
+
+    func vertices(color: XColor) -> [Vertex] {
+        let l = minX, r = maxX, t = minY, b = maxY
+        let rgba = color.rgba
+        let (_r, _g, _b, _a) = (Float(rgba.r), Float(rgba.g), Float(rgba.b), Float(rgba.a))
+        return [
+            Vertex(x: l, y: t, z: 0, w: 1, r: _r, g: _g, b: _b, a: _a),
+            Vertex(x: l, y: b, z: 0, w: 1, r: _r, g: _g, b: _b, a: _a),
+            Vertex(x: r, y: b, z: 0, w: 1, r: _r, g: _g, b: _b, a: _a),
+            Vertex(x: l, y: t, z: 0, w: 1, r: _r, g: _g, b: _b, a: _a),
+            Vertex(x: r, y: b, z: 0, w: 1, r: _r, g: _g, b: _b, a: _a),
+            Vertex(x: r, y: t, z: 0, w: 1, r: _r, g: _g, b: _b, a: _a),
+        ]
+    }
+}
+
 class ColorRenderer: Renderer {
 
 	typealias VertexType = Vertex
@@ -99,26 +118,9 @@ class ColorRenderer: Renderer {
 		commandBuffer.commit()
 	}
 
-	func vertexBuffer(for vertices: [Vertex]) -> VertexBuffer<Vertex>? {
-		return VertexBuffer(device: device, vertices: vertices)
-	}
-
-	func vertices(for rect: Rect, color: XColor) -> [Vertex] {
-		let l = rect.minX, r = rect.maxX, t = rect.minY, b = rect.maxY
-		let rgba = color.rgba
-		let (_r, _g, _b, _a) = (Float(rgba.r), Float(rgba.g), Float(rgba.b), Float(rgba.a))
-		return [
-			Vertex(x: l, y: t, z: 0, w: 1, r: _r, g: _g, b: _b, a: _a),
-			Vertex(x: l, y: b, z: 0, w: 1, r: _r, g: _g, b: _b, a: _a),
-			Vertex(x: r, y: b, z: 0, w: 1, r: _r, g: _g, b: _b, a: _a),
-			Vertex(x: l, y: t, z: 0, w: 1, r: _r, g: _g, b: _b, a: _a),
-			Vertex(x: r, y: b, z: 0, w: 1, r: _r, g: _g, b: _b, a: _a),
-			Vertex(x: r, y: t, z: 0, w: 1, r: _r, g: _g, b: _b, a: _a),
-		]
-	}
-
 	func render(context: RenderContext, rect: Rect, color: XColor) {
-		guard let vertexBuffer = vertexBuffer(for: vertices(for: rect, color: color)) else { return }
+		let vertices = rect.vertices(color: color)
+        let vertexBuffer = VertexBuffer(device: device, vertices: vertices)
 		render(context: context, vertexBuffer: vertexBuffer)
 	}
 
@@ -131,22 +133,21 @@ extension RenderContext {
 	func render(triangles: [(ColorVertex, ColorVertex, ColorVertex)]) {
 		
 		let renderer: ColorRenderer = self.device.renderer()
-		let vertexes: [ColorVertex] = triangles.flatMap { [$0.0, $0.1, $0.2] }
-		if let vertexBuffer = renderer.vertexBuffer(for: vertexes) {
-			renderer.render(context: self, vertexBuffer: vertexBuffer)
-		}
+		let vertices: [ColorVertex] = triangles.flatMap { [$0.0, $0.1, $0.2] }
+        let vertexBuffer = VertexBuffer(device: device, vertices: vertices)
+
+        renderer.render(context: self, vertexBuffer: vertexBuffer)
 	}
 
 	func render(triangles: [(Point, Point, Point)], color: XColor) {
 		let rgba = color.rgba
 		let (r, g, b, a) = (Float(rgba.r), Float(rgba.g), Float(rgba.b), Float(rgba.a))
 		let renderer: ColorRenderer = self.device.renderer()
-		let vertexes: [ColorVertex] = triangles.flatMap {
+		let vertices: [ColorVertex] = triangles.flatMap {
 			[$0.0, $0.1, $0.2].map { ColorVertex(x: $0.x, y: $0.y, z: 0, w: 1, r: r, g: g, b: b, a: a) }
 		}
-		if let vertexBuffer = renderer.vertexBuffer(for: vertexes) {
-			renderer.render(context: self, vertexBuffer: vertexBuffer)
-		}
+        let vertexBuffer = VertexBuffer(device: device, vertices: vertices)
+        renderer.render(context: self, vertexBuffer: vertexBuffer)
 	}
 
 }
