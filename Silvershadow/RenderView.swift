@@ -15,6 +15,12 @@
 import MetalKit
 import GLKit
 
+extension CGRect {
+    init(size : CGSize) {
+        self.init(origin: .zero, size: size)
+    }
+}
+
 class RenderView: XView, MTKViewDelegate {
 
     var scene: Scene? {
@@ -42,7 +48,7 @@ class RenderView: XView, MTKViewDelegate {
             let contentSize = scene.contentSize
             self.scrollView.contentSize = contentSize
             //			self.contentView.bounds = CGRect(x: 0, y: 0, width: contentSize.width, height: contentSize.height)
-            let bounds = CGRect(origin: .zero, size: contentSize)
+            let bounds = CGRect(size: contentSize)
             let frame = scrollView.convert(bounds, to: contentView)
             contentView.frame = frame
         }
@@ -81,7 +87,7 @@ class RenderView: XView, MTKViewDelegate {
         bringSubview(toFront: scrollView)
 
         let size = scene?.contentSize ?? bounds.size
-        scrollView.documentView?.frame = CGRect(origin: .zero, size: size)
+        scrollView.documentView?.frame = CGRect(size: size)
 
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.autoresizingMask = [.viewMaxXMargin, /*.viewMinYMargin,*/ .viewMaxYMargin]

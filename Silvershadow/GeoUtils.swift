@@ -327,7 +327,7 @@ extension GLKVector2: CustomStringConvertible {
 		self.init(v: (Float(point.x), Float(point.y)))
 	}
 	public var description: String {
-		return	"[ \(self.x), \(self.y) ]"
+		return	"[ \(x), \(y) ]"
 	}
 	static func + (l: GLKVector2, r: GLKVector2) -> GLKVector2 {
 		return GLKVector2Add(l, r)
@@ -337,7 +337,7 @@ extension GLKVector2: CustomStringConvertible {
 
 extension GLKVector4: CustomStringConvertible {
 	public var description: String {
-		return	"[ \(self.x), \(self.y), \(self.z), \(self.w) ]"
+		return	"[ \(x), \(y), \(z), \(w) ]"
 	}
 }
 

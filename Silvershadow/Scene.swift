@@ -26,7 +26,7 @@ class Scene {
 	weak var renderView: RenderView?
 
 	var bounds: CGRect {
-        return CGRect(origin: .zero, size: contentSize)
+        return CGRect(size: contentSize)
 	}
 	
 	init?(device: MTLDevice, contentSize: CGSize) {
@@ -84,34 +84,27 @@ class Scene {
 
 	#if os(iOS)
 	func locationInScene(_ touch: UITouch) -> CGPoint? {
-		guard let contentView = self.renderView?.contentView else { return nil }
-		return touch.location(in: contentView)
+        return renderView?.contentView.map { touch.location(in: $0) }
 	}
+
+    func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    }
+
+    func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    }
+
+    func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    }
+
+    func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    }
 	#endif
 
 	#if os(macOS)
 	func locationInScene(_ event: NSEvent) -> CGPoint? {
         return renderView?.contentView.convert(event.locationInWindow, from: nil)
 	}
-	#endif
 
-	// MARK: -
-
-	#if os(iOS)
-	func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-	}
-	
-	func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-	}
-	
-	func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-	}
-	
-	func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-	}
-	#endif
-
-	#if os(macOS)
 	func mouseDown(with event: NSEvent) {
 	}
 	

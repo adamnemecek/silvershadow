@@ -75,7 +75,7 @@ public extension CGPath {
 	var pathElements: [PathElement] {
 		var elements = Elements()
 
-		self.apply(info: &elements) { (info, element) -> () in
+		self.apply(info: &elements) { (info, element) in
 
             var e : PathElement
 

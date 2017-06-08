@@ -82,9 +82,9 @@ class RenderContext {
 	//
 
 	lazy var shadingTexture: MTLTexture = {
-		let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .`default`,
-					width: Int(self.deviceSize.width), height: Int(self.deviceSize.height), mipmapped: false)
-		descriptor.usage = [.shaderRead, .renderTarget]
+        let descriptor : MTLTextureDescriptor = .texture2DDescriptor(size: self.deviceSize,
+                                                                     mipmapped: false,
+                                                                     usage: [.shaderRead, .renderTarget])
 		return self.device.makeTexture(descriptor: descriptor)
 	}()
 
