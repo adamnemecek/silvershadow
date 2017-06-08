@@ -27,9 +27,7 @@ class SampleCanvasScribbleLayer: CanvasLayer {
 	}()
 
 	override func render(context: RenderContext) {
-		guard let device = self.device else { return }
-	
-		let bezierRenderer = device.renderer() as BezierRenderer
+        guard let bezierRenderer : BezierRenderer = (device.map { $0.renderer() }) else { return }
 
 		context.brushPattern = self.brushPatternTexture
 		bezierRenderer.render(context: context, cgPaths: strokePaths)

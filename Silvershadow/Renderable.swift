@@ -31,7 +31,7 @@ protocol Renderable: class {
 
 extension Renderable {
 	var renderer: RendererType {
-		return device.renderer() as RendererType
+		return device.renderer()
 	}
 }
 
