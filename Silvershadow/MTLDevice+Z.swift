@@ -10,8 +10,6 @@ import Foundation
 import MetalKit
 import GLKit
 
-
-
 extension MTLDevice {
 
 	var textureLoader: MTKTextureLoader {
@@ -40,7 +38,7 @@ extension MTLDevice {
 	}
 
     func makeSamplerState() -> MTLSamplerState {
-        return makeSamplerState()
+        return makeSamplerState(descriptor : .`default`)
     }
 
 	func texture(named name: String) -> MTLTexture? {

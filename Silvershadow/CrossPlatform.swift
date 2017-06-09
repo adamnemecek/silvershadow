@@ -82,7 +82,6 @@ typealias XRGBA = (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
             }
             return path
         }
-
     }
 
     extension NSView {

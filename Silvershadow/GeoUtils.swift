@@ -107,8 +107,8 @@ struct Point: Hashable, CustomStringConvertible {
 	}
 
 	var normalized: Point {
-		let length = self.length
-		return Point(x: x/length, y: y/length)
+        let length = self.length
+        return Point(x: x/length, y: y/length)
 	}
 
 	func angle(to: Point) -> Float {
@@ -148,6 +148,7 @@ struct Size: CustomStringConvertible {
 		self.width = Float(size.width)
 		self.height = Float(size.height)
 	}
+
 	var description: String {
 		return "(w:\(width), h:\(height))"
 	}

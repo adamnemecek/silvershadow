@@ -14,25 +14,6 @@ import GLKit
 
 typealias PointVertex = PointsRenderer.Vertex
 
-extension MTLSamplerDescriptor {
-
-    convenience init(min: MTLSamplerMinMagFilter,
-                     max: MTLSamplerMinMagFilter,
-                     s: MTLSamplerAddressMode,
-                     t: MTLSamplerAddressMode) {
-        self.init()
-        minFilter = min
-        magFilter = max
-        sAddressMode = s
-        tAddressMode = t
-    }
-
-    static let `default` = MTLSamplerDescriptor(min: .nearest,
-                                                max: .linear,
-                                                s: .repeat,
-                                                t: .repeat)
-}
-
 //
 //	PointsRenderer
 //
@@ -105,9 +86,7 @@ class PointsRenderer: Renderer {
         return try! self.device.makeRenderPipelineState(descriptor: renderPipelineDescriptor)
     }()
 
-    lazy var colorSamplerState: MTLSamplerState = {
-        return self.device.makeSamplerState()
-    }()
+    lazy var colorSamplerState: MTLSamplerState = self.device.makeSamplerState()
 
     func vertexBuffer(for vertices: [Vertex], capacity: Int? = nil) -> VertexBuffer<Vertex> {
         return VertexBuffer(device: device, vertices: vertices, capacity: capacity)

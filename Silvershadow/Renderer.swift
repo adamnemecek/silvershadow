@@ -10,10 +10,6 @@
 import MetalKit
 import GLKit
 
-extension MTLPixelFormat {
-    static let `default` : MTLPixelFormat = .bgra8Unorm
-}
-
 protocol Renderer: class {
 	var device: MTLDevice { get }
 	init(device: MTLDevice)

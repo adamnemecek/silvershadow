@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		375D48BA1EEA137D005FD199 /* Metal+Z.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375D48B91EEA137D005FD199 /* Metal+Z.swift */; };
+		375D48BB1EEA1410005FD199 /* Metal+Z.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375D48B91EEA137D005FD199 /* Metal+Z.swift */; };
 		CC0FD5ED1E4BA65A00D3970A /* Particle-b.png in Resources */ = {isa = PBXBuildFile; fileRef = CC0FD5EB1E4BA65A00D3970A /* Particle-b.png */; };
 		CC0FD5EE1E4BA65A00D3970A /* Particle-w.png in Resources */ = {isa = PBXBuildFile; fileRef = CC0FD5EC1E4BA65A00D3970A /* Particle-w.png */; };
 		CC0FD5F01E4BA73000D3970A /* Pencil.png in Resources */ = {isa = PBXBuildFile; fileRef = CC0FD5EF1E4BA73000D3970A /* Pencil.png */; };
@@ -119,6 +121,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		375D48B91EEA137D005FD199 /* Metal+Z.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Metal+Z.swift"; sourceTree = "<group>"; };
 		CC0FD5EB1E4BA65A00D3970A /* Particle-b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Particle-b.png"; sourceTree = "<group>"; };
 		CC0FD5EC1E4BA65A00D3970A /* Particle-w.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Particle-w.png"; sourceTree = "<group>"; };
 		CC0FD5EF1E4BA73000D3970A /* Pencil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pencil.png; path = ../Shared/Pencil.png; sourceTree = "<group>"; };
@@ -205,6 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				CCF3497F1E0F9A0300EF1312 /* CoreGraphics+Z.swift */,
+				375D48B91EEA137D005FD199 /* Metal+Z.swift */,
 				CC851CDE1E12F8AD0083268F /* Sequence+Z.swift */,
 				CC78D71B1E43832C00B7C0DA /* CGPath+Z.swift */,
 				CCB11D9A1E24C65300F30482 /* MTLDevice+Z.swift */,
@@ -473,6 +477,7 @@
 				CC50D76C1E593F67005A069B /* RenderCanvasContext.swift in Sources */,
 				CC851CF31E1366540083268F /* SampleCanvasBackdropLayer.swift in Sources */,
 				CCE0395C1E434E2E00B58AFA /* Float16.swift in Sources */,
+				375D48BA1EEA137D005FD199 /* Metal+Z.swift in Sources */,
 				CC1F2F311E1151180097B223 /* ImageShaders.metal in Sources */,
 				CCADFADE1E211EBB00ECB9D0 /* BezierRenderer.swift in Sources */,
 				CCF349B01E0FA19100EF1312 /* XView+Z.swift in Sources */,
@@ -507,6 +512,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				375D48BB1EEA1410005FD199 /* Metal+Z.swift in Sources */,
 				CC54295E1E14EF3C00C1929E /* SampleCanvasScribbleLayer.swift in Sources */,
 				CC851CF41E1366540083268F /* SampleCanvasBackdropLayer.swift in Sources */,
 				CCE9FE2D1E5953FC002603BC /* PatternShaders.metal in Sources */,

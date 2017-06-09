@@ -10,32 +10,31 @@ import MetalKit
 
 class CanvasLayer: Equatable {
 
-	var name: String?
+    var name: String?
 
-	weak var canvas: Canvas?
-	var isHidden: Bool = false
-	
-	var device: MTLDevice? { return canvas?.device }
-	
-	var contentSize: CGSize? { return canvas?.contentSize }
-	
-	var bounds: CGRect? {
+    weak var canvas: Canvas?
+    var isHidden: Bool = false
+
+    var device: MTLDevice? { return canvas?.device }
+
+    var contentSize: CGSize? { return canvas?.contentSize }
+
+    var bounds: CGRect? {
         return contentSize.map { CGRect(origin: .zero, size: $0) }
-	}
-	
-	init() {
-		self.canvas = nil
-	}
+    }
 
-	func didMoveTo(canvas: Canvas) {
-		self.canvas = canvas
-	}
+    init() {
+        self.canvas = nil
+    }
 
-	func render(context: RenderContext) {
-	}
+    func didMoveTo(canvas: Canvas) {
+        self.canvas = canvas
+    }
 
-	static func == (lhs: CanvasLayer, rhs: CanvasLayer) -> Bool {
-		return lhs === rhs
-	}
-	
+    func render(context: RenderContext) {
+    }
+
+    static func ==(lhs: CanvasLayer, rhs: CanvasLayer) -> Bool {
+        return lhs === rhs
+    }
 }
