@@ -212,10 +212,9 @@ class BezierRenderer: Renderer {
 	lazy var heap: XHeap = {
 		return self.device.makeHeap(size: 1024 * 1024 * 64) // ??
 	}()
-	#endif
 
-	#if os(macOS)
-	var heap: XHeap { return self.device }
+	#elseif os(macOS)
+    var heap: XHeap { return self.device }
 	#endif
 
 

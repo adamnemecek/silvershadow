@@ -20,8 +20,7 @@ protocol Renderable: class {
 
 extension Renderable {
 	var renderer: RendererType {
-		let renderer = self.device.renderer() as RendererType
-		return renderer
+		return self.device.renderer() as RendererType
 	}
 }
 

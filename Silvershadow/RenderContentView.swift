@@ -24,25 +24,13 @@ class RenderContentView: XView {
 		super.draw(rect)
 	}
 
-	#if os(iOS)
-	override func layoutSubviews() {
-		super.layoutSubviews()
-	}
-
-	#elseif os(macOS)
-	override func layout() {
-		super.layout()
-	}
-
-    override var isFlipped: Bool {
-		return true
-	}
-	#endif
-
-
 	// MARK: -
 
 	#if os(iOS)
+    override func layoutSubviews() {
+        super.layoutSubviews()
+    }
+
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		renderView?.scene?.touchesBegan(touches, with: event)
 	}
@@ -59,6 +47,14 @@ class RenderContentView: XView {
 		renderView?.scene?.touchesCancelled(touches, with: event)
 	}
 	#elseif os(macOS)
+
+    override func layout() {
+        super.layout()
+    }
+
+    override var isFlipped: Bool {
+        return true
+    }
 
 	override func mouseDown(with event: NSEvent) {
 		renderView?.scene?.mouseDown(with: event)

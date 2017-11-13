@@ -98,8 +98,7 @@ public extension CGPath {
 			}
 		}
 
-		let pathelements = elements.pathElements
-		return pathelements
+		return elements.pathElements
 	}
 }
 
