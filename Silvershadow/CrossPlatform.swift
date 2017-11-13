@@ -77,24 +77,21 @@ import Foundation
 
         func sendSubview(toBack: NSView) {
             var subviews = self.subviews
-            guard let index = subviews.index(of: toBack) else { return }
-            subviews.remove(at: index)
+            guard let _ = subviews.remove(toBack) else { return }
             subviews.insert(toBack, at: 0)
             self.subviews = subviews
         }
 
         func bringSubview(toFront: NSView) {
             var subviews = self.subviews
-            guard let index = subviews.index(of: toFront) else { return }
-            subviews.remove(at: index)
+            guard let _ = subviews.remove(toFront) else { return }
             subviews.append(toFront)
             self.subviews = subviews
         }
 
         func replaceSubview(subview: NSView, with other: NSView) {
             var subviews = self.subviews
-            guard let index = subviews.index(of: subview) else { return }
-            subviews.remove(at: index)
+            guard let index = subviews.remove(subview) else { return }
             subviews.insert(other, at: index)
             self.subviews = subviews
         }

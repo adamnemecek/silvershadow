@@ -30,51 +30,6 @@ class RenderView: XView, MTKViewDelegate {
 		}
 	}
 
-	#if os(iOS)
-	override func layoutSubviews() {
-		super.layoutSubviews()
-
-		self.sendSubview(toBack: self.mtkView)
-		self.bringSubview(toFront: self.drawView)
-		self.bringSubview(toFront: self.scrollView)
-
-		if let scene = self.scene {
-			let contentSize = scene.contentSize
-			self.scrollView.contentSize = contentSize
-//			self.contentView.bounds = CGRect(x: 0, y: 0, width: contentSize.width, height: contentSize.height)
-            let bounds = CGRect(size: contentSize)
-			let frame = self.scrollView.convert(bounds, to: self.contentView)
-			self.contentView.frame = frame
-		}
-		else {
-			self.scrollView.contentSize = self.bounds.size
-			self.contentView.bounds = self.bounds
-		}
-		self.scrollView.autoresizesSubviews = false;
-		self.contentView.translatesAutoresizingMaskIntoConstraints = false
-		self.contentView.autoresizingMask = []
-		self.contentView.autoresizingMask = [.flexibleRightMargin, .flexibleBottomMargin]
-		self.setNeedsDisplay()
-	}
-
-	#elseif os(macOS)
-	override func layout() {
-		super.layout()
-
-		self.sendSubview(toBack: self.mtkView)
-		self.bringSubview(toFront: self.drawView)
-		self.bringSubview(toFront: self.scrollView)
-
-        let contentSize = scene?.contentSize ?? bounds.size
-
-        self.scrollView.documentView?.frame = CGRect(size: contentSize)
-
-		self.contentView.translatesAutoresizingMaskIntoConstraints = false
-		self.contentView.autoresizingMask = [.viewMaxXMargin, /*.viewMinYMargin,*/ .viewMaxYMargin]
-		self.setNeedsDisplay()
-	}
-	#endif
-
 	private (set) lazy var mtkView: MTKView = {
 		let mtkView = MTKView(frame: self.bounds)
 		mtkView.device = MTLCreateSystemDefaultDevice()!
@@ -101,6 +56,53 @@ class RenderView: XView, MTKViewDelegate {
 		self.contentView.frame = self.bounds
 		return scrollView
 	}()
+
+    override func setNeedsDisplay() {
+        super.setNeedsDisplay()
+        self.mtkView.setNeedsDisplay()
+        self.drawView.setNeedsDisplay()
+    }
+
+    var minimumNumberOfTouchesToScroll: Int {
+        get { return self.scrollView.panGestureRecognizer.minimumNumberOfTouches }
+        set { self.scrollView.panGestureRecognizer.minimumNumberOfTouches = newValue }
+    }
+
+    var scrollEnabled: Bool {
+        get { return self.scrollView.isScrollEnabled }
+        set { self.scrollView.isScrollEnabled = newValue }
+    }
+
+    var delaysContentTouches: Bool {
+        get { return self.scrollView.delaysContentTouches }
+        set { self.scrollView.delaysContentTouches = newValue }
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        self.sendSubview(toBack: self.mtkView)
+        self.bringSubview(toFront: self.drawView)
+        self.bringSubview(toFront: self.scrollView)
+
+        if let scene = self.scene {
+            let contentSize = scene.contentSize
+            self.scrollView.contentSize = contentSize
+            //            self.contentView.bounds = CGRect(x: 0, y: 0, width: contentSize.width, height: contentSize.height)
+            let bounds = CGRect(size: contentSize)
+            let frame = self.scrollView.convert(bounds, to: self.contentView)
+            self.contentView.frame = frame
+        }
+        else {
+            self.scrollView.contentSize = self.bounds.size
+            self.contentView.bounds = self.bounds
+        }
+        self.scrollView.autoresizesSubviews = false;
+        self.contentView.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.autoresizingMask = []
+        self.contentView.autoresizingMask = [.flexibleRightMargin, .flexibleBottomMargin]
+        self.setNeedsDisplay()
+    }
 
 	#elseif os(macOS)
 	private (set) lazy var scrollView: NSScrollView = {
@@ -141,6 +143,31 @@ class RenderView: XView, MTKViewDelegate {
 //		self.drawView.setNeedsDisplay()
 		self.mtkView.setNeedsDisplay()
 	}
+
+    override func setNeedsDisplay() {
+        self.mtkView.setNeedsDisplay()
+        self.drawView.setNeedsDisplay()
+    }
+
+    override var isFlipped: Bool {
+        return true
+    }
+
+    override func layout() {
+        super.layout()
+
+        self.sendSubview(toBack: self.mtkView)
+        self.bringSubview(toFront: self.drawView)
+        self.bringSubview(toFront: self.scrollView)
+
+        let contentSize = scene?.contentSize ?? bounds.size
+
+        self.scrollView.documentView?.frame = CGRect(size: contentSize)
+
+        self.contentView.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.autoresizingMask = [.viewMaxXMargin, /*.viewMinYMargin,*/ .viewMaxYMargin]
+        self.setNeedsDisplay()
+    }
 	#endif
 
 	private (set) lazy var drawView: RenderDrawView = {
@@ -167,26 +194,6 @@ class RenderView: XView, MTKViewDelegate {
 	}
 
 	private (set) var commandQueue: MTLCommandQueue?
-
-	// MARK: -
-
-	#if os(iOS)
-	override func setNeedsDisplay() {
-		super.setNeedsDisplay()
-		self.mtkView.setNeedsDisplay()
-		self.drawView.setNeedsDisplay()
-	}
-	#elseif os(macOS)
-	override func setNeedsDisplay() {
-		self.mtkView.setNeedsDisplay()
-		self.drawView.setNeedsDisplay()
-	}
-
-    override var isFlipped: Bool {
-		return true
-	}
-
-	#endif
 
 	// MARK: -
 
@@ -225,10 +232,12 @@ class RenderView: XView, MTKViewDelegate {
 		// setup render context
 		let transform = GLKMatrix4(self.drawingTransform)
 		renderPassDescriptor.colorAttachments[0].loadAction = .load
-		let renderContext = RenderContext(
-				renderPassDescriptor: renderPassDescriptor, commandQueue: commandQueue,
-				contentSize: scene.contentSize, deviceSize: self.mtkView.drawableSize,
-				transform: transform, zoomScale: self.zoomScale)
+		let renderContext = RenderContext(renderPassDescriptor: renderPassDescriptor,
+                                          commandQueue: commandQueue,
+                                          contentSize: scene.contentSize,
+                                          deviceSize: self.mtkView.drawableSize,
+                                          transform: transform,
+                                          zoomScale: self.zoomScale)
 
 		// actual rendering
 		scene.render(in: renderContext)
@@ -262,24 +271,6 @@ class RenderView: XView, MTKViewDelegate {
 	func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
 	}
 
-	// MARK: -
-
-	#if os(iOS)
-	var minimumNumberOfTouchesToScroll: Int {
-		get { return self.scrollView.panGestureRecognizer.minimumNumberOfTouches }
-		set { self.scrollView.panGestureRecognizer.minimumNumberOfTouches = newValue }
-	}
-
-	var scrollEnabled: Bool {
-		get { return self.scrollView.isScrollEnabled }
-		set { self.scrollView.isScrollEnabled = newValue }
-	}
-
-	var delaysContentTouches: Bool {
-		get { return self.scrollView.delaysContentTouches }
-		set { self.scrollView.delaysContentTouches = newValue }
-	}
-	#endif
 }
 
 #if os(iOS)
