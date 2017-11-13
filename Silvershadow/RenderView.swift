@@ -44,7 +44,7 @@ class RenderView: XView, MTKViewDelegate {
 	private (set) lazy var scrollView: UIScrollView = {
 		let scrollView = UIScrollView(frame: self.bounds)
 		scrollView.delegate = self
-		scrollView.backgroundColor = UIColor.clear
+		scrollView.backgroundColor = .clear
 		scrollView.maximumZoomScale = 4.0
 		scrollView.minimumZoomScale = 1.0
 		scrollView.autoresizesSubviews = false
@@ -255,13 +255,15 @@ class RenderView: XView, MTKViewDelegate {
 	var drawingTransform: CGAffineTransform {
 		guard let scene = self.scene else { return .identity }
 		let targetRect = contentView.convert(self.contentView.bounds, to: self.mtkView)
-		let transform0 = CGAffineTransform(translationX: 0, y: self.contentView.bounds.height).scaledBy(x: 1, y: -1)
+
 		let transform1 = scene.bounds.transform(to: targetRect)
 		let transform2 = self.mtkView.bounds.transform(to: CGRect(x: -1.0, y: -1.0, width: 2.0, height: 2.0))
-		let transform3 = CGAffineTransform.identity.translatedBy(x: 0, y: +1).scaledBy(x: 1, y: -1).translatedBy(x: 0, y: 1)
+
 		#if os(iOS)
+        let transform3 = CGAffineTransform.identity.translatedBy(x: 0, y: +1).scaledBy(x: 1, y: -1).translatedBy(x: 0, y: 1)
 		let transform = transform1 * transform2 * transform3
 		#elseif os(macOS)
+        let transform0 = CGAffineTransform(translationX: 0, y: self.contentView.bounds.height).scaledBy(x: 1, y: -1)
 		let transform = transform0 * transform1 * transform2
 		#endif
 		return transform
