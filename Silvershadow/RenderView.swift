@@ -19,14 +19,13 @@ class RenderView: XView, MTKViewDelegate {
 
 	var scene: Scene? {
 		didSet {
-			if scene !== oldValue {
-				if let scene = scene {
-					self.mtkView.device = scene.device
-					self.commandQueue = scene.device.makeCommandQueue()
-					scene.didMove(to: self)
-				}
-				self.setNeedsLayout() // implies adjusting document
-			}
+            guard scene !== oldValue else { return }
+            if let scene = scene {
+                self.mtkView.device = scene.device
+                self.commandQueue = scene.device.makeCommandQueue()
+                scene.didMove(to: self)
+            }
+            self.setNeedsLayout() // implies adjusting document
 		}
 	}
 
@@ -125,7 +124,7 @@ class RenderView: XView, MTKViewDelegate {
 
 		// posting notification when zoomed, scrolled or resized
 
-		NotificationCenter.default.addObserver(self, selector: #selector(RenderView.scrollContentDidChange),
+		NotificationCenter.default.addObserver(self, selector: #selector(scrollContentDidChange),
 					name: .NSViewBoundsDidChange, object: nil)
 		scrollView.allowsMagnification = true
 		scrollView.maxMagnification = 4
@@ -270,7 +269,6 @@ class RenderView: XView, MTKViewDelegate {
 
 	func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
 	}
-
 }
 
 #if os(iOS)
