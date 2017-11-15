@@ -93,7 +93,7 @@ class SampleScene: Scene {
 		let bezierRenderer = device.renderer() as BezierRenderer
 		bezierRenderer.render(context: context, cgPaths: [self.samplePath()])
 
-		context.widthCGContext { (cgContext) in
+		context.withCGContext { (cgContext) in
             let paragraphStyle : NSMutableParagraphStyle = .makeParagraphStyle()
 			paragraphStyle.alignment = .center
 			let attributes = [

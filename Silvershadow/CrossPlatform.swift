@@ -143,10 +143,17 @@ struct XRGBA {
 }
 
 extension XColor {
-
     var rgba: XRGBA {
         return .init(color: self)
     }
+}
+
+extension XImage.Name {
+    static let grid = XImage.Name(rawValue: "Grid")
+    static let test = XImage.Name(rawValue: "test")
+    static let pencil = XImage.Name(rawValue: "Pencil")
+    static let particle = XImage.Name(rawValue: "Particle")
+    static let blueMarble = XImage.Name(rawValue: "BlueMarble")
 }
 
 extension NSMutableParagraphStyle {
