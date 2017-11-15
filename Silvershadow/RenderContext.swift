@@ -104,9 +104,12 @@ class RenderContext {
 		transform: GLKMatrix4,
 		zoomScale: CGFloat = 1
 	) {
-		self.current = RenderContextState(
-					renderPassDescriptor: renderPassDescriptor, commandQueue: commandQueue,
-					contentSize: contentSize, deviceSize: deviceSize, transform: transform, zoomScale: zoomScale)
+		self.current = RenderContextState(renderPassDescriptor: renderPassDescriptor,
+                                          commandQueue: commandQueue,
+                                          contentSize: contentSize,
+                                          deviceSize: deviceSize,
+                                          transform: transform,
+                                          zoomScale: zoomScale)
 	}
 
 	func makeCommandBuffer() -> MTLCommandBuffer {
