@@ -12,7 +12,6 @@ import MetalKit
 import GLKit
 import simd
 
-
 //
 //	ImageRenderer
 //
@@ -38,13 +37,19 @@ class PatternRenderer: Renderer {
     }
 
 	struct Uniforms {
-		var transform: GLKMatrix4
-		var contentSize: float2
-		var patternSize: float2
+		let transform: GLKMatrix4
+		let contentSize: float2
+		let patternSize: float2
+
+        init(context: RenderContext) {
+            transform = context.transform
+            contentSize = float2(Float(context.deviceSize.width), Float(context.deviceSize.height))
+            patternSize = float2(Float(context.brushPattern.width), Float(context.brushPattern.height))
+        }
+        
 	}
 
 	let device: MTLDevice
-
 
 	required init(device: MTLDevice) {
 		self.device = device
@@ -159,10 +164,9 @@ class PatternRenderer: Renderer {
 		defer { tripleBufferIndex = (tripleBufferIndex + 1) % uniformTripleBuffer.count }
 
 		let uniformsBuffer = uniformTripleBuffer[tripleBufferIndex]
-		let uniformsBufferPtr = UnsafeMutablePointer<Uniforms>(OpaquePointer(uniformsBuffer.contents()))
-		uniformsBufferPtr.pointee.transform = context.transform
-		uniformsBufferPtr.pointee.contentSize = float2(Float(context.deviceSize.width), Float(context.deviceSize.height))
-		uniformsBufferPtr.pointee.patternSize = float2(Float(context.brushPattern.width), Float(context.brushPattern.height))
+		let uniformsBufferPtr = uniformsBuffer.contents().assumingMemoryBound(to: Uniforms.self)
+        let uniform = Uniforms(context: context)
+		uniformsBufferPtr.pointee = uniform
 
 		let vertexes = self.vertices(for: rect)
 		assert(vertexes.count == rectangularVertexCount)

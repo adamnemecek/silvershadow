@@ -126,7 +126,6 @@ class ColorRenderer: Renderer {
 
 extension RenderContext {
 
-
 	func render(triangles: [(ColorVertex, ColorVertex, ColorVertex)]) {
 
 		let renderer: ColorRenderer = self.device.renderer()

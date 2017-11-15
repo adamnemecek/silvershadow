@@ -31,7 +31,7 @@ extension MTLDevice {
 		guard let texture = try? textureLoader.newTexture(cgImage: image, options: options) else { return nil }
 
 		if texture.pixelFormat == .bgra8Unorm { return texture }
-		else { return texture.makeTextureView(pixelFormat: .bgra8Unorm) }
+		return texture.makeTextureView(pixelFormat: .bgra8Unorm)
 	}
 
 	func texture(of image: XImage) -> MTLTexture? {

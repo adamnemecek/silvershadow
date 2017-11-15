@@ -99,7 +99,7 @@ extension CGSize {
 	func aspectFit(_ size: CGSize) -> CGSize {
 		let widthRatio = self.width / size.width
 		let heightRatio = self.height / size.height
-		let ratio = (widthRatio < heightRatio) ? widthRatio : heightRatio
+		let ratio = min(widthRatio, heightRatio)
 		let width = size.width * ratio
 		let height = size.height * ratio
 		return CGSize(width: width, height: height)
