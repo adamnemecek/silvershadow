@@ -26,7 +26,7 @@ class SampleScene: Scene {
 	}()
 
 	lazy var image1Texture: MTLTexture = {
-		return self.device.texture(of: XImage(named: NSImage.Name(rawValue: "BlueMarble"))!)!
+		return self.device.texture(of: XImage(named: .blueMarble)!)!
 	}()
 
 	// MRAK: -

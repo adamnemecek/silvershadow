@@ -82,18 +82,20 @@ class RenderContext {
 	//
 
 	lazy var shadingTexture: MTLTexture = {
-		let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .`default`,
-					width: Int(self.deviceSize.width), height: Int(self.deviceSize.height), mipmapped: false)
+        let descriptor : MTLTextureDescriptor = .texture2DDescriptor(pixelFormat: .`default`,
+					width: Int(self.deviceSize.width),
+                    height: Int(self.deviceSize.height),
+                    mipmapped: false)
 		descriptor.usage = [.shaderRead, .renderTarget]
 		return self.device.makeTexture(descriptor: descriptor)!
 	}()
 
 	lazy var brushShape: MTLTexture = {
-		return self.device.texture(of: XImage(named: NSImage.Name(rawValue: "Particle"))!)!
+		return self.device.texture(of: XImage(named: .particle)!)!
 	}()
 
 	lazy var brushPattern: MTLTexture = {
-		return self.device.texture(of: XImage(named: NSImage.Name(rawValue: "Pencil"))!)!
+		return self.device.texture(of: XImage(named: .pencil)!)!
 	}()
 
 	init(

@@ -13,12 +13,12 @@ import MetalKit
 class SampleCanvasScribbleLayer: CanvasLayer {
 
 	lazy var brushSapeTexture: MTLTexture? = {
-		return self.device?.texture(of: XImage(named: NSImage.Name(rawValue: "Particle"))!)!
+		return self.device?.texture(of: XImage(named: .particle)!)!
 	}()
 
 
 	lazy var brushPatternTexture: MTLTexture! = {
-		return self.device?.texture(of: XImage(named: NSImage.Name(rawValue: "Pencil"))!)!
+		return self.device?.texture(of: XImage(named: .pencil)!)!
 	}()
 
 	lazy var strokePaths: [CGPath] = {

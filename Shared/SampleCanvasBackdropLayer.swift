@@ -12,6 +12,9 @@ import MetalKit
 extension XImage.Name {
     static let grid = XImage.Name(rawValue: "Grid")
     static let test = XImage.Name(rawValue: "test")
+    static let pencil = XImage.Name(rawValue: "Pencil")
+    static let particle = XImage.Name(rawValue: "Particle")
+    static let blueMarble = XImage.Name(rawValue: "BlueMarble")
 }
 
 
@@ -20,7 +23,8 @@ class SampleCanvasBackdropLayer: CanvasLayer {
 	lazy var imageRenderable: ImageRenderable? = {
 		guard let device = self.device else { return nil }
 		guard let image = XImage(named: .grid) else { fatalError("not found") }
-		return ImageRenderable(device: device, image: image, frame: Rect(0, 0, 2048, 1024))!
+		return ImageRenderable(device: device,
+                               image: image, frame: Rect(0, 0, 2048, 1024))!
 	}()
 
 	lazy var brushPatternTexture: MTLTexture! = {
