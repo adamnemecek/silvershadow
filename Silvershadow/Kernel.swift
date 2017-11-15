@@ -17,7 +17,7 @@ protocol Kernel: class {
 
 extension Kernel {
 	var library: MTLLibrary {
-		return self.device.newDefaultLibrary()!
+		return self.device.makeDefaultLibrary()!
 	}
 }
 

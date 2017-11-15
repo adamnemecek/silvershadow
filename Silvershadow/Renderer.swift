@@ -21,7 +21,7 @@ protocol Renderer: class {
 
 extension Renderer {
 	var library: MTLLibrary {
-		return self.device.newDefaultLibrary()!
+		return self.device.makeDefaultLibrary()!
 	}
 }
 

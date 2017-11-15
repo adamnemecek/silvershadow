@@ -26,7 +26,7 @@ class SampleScene: Scene {
 	}()
 
 	lazy var image1Texture: MTLTexture = {
-		return self.device.texture(of: XImage(named: "BlueMarble")!)!
+		return self.device.texture(of: XImage(named: NSImage.Name(rawValue: "BlueMarble"))!)!
 	}()
 
 	// MRAK: -
@@ -97,9 +97,9 @@ class SampleScene: Scene {
             let paragraphStyle : NSMutableParagraphStyle = .makeParagraphStyle()
 			paragraphStyle.alignment = .center
 			let attributes = [
-				NSFontAttributeName: XFont.boldSystemFont(ofSize: 32),
-				NSForegroundColorAttributeName: XColor.white,
-				NSParagraphStyleAttributeName: paragraphStyle
+				NSAttributedStringKey.font: XFont.boldSystemFont(ofSize: 32),
+				NSAttributedStringKey.foregroundColor: XColor.white,
+				NSAttributedStringKey.paragraphStyle: paragraphStyle
 			]
 			let formatter = DateFormatter()
 			formatter.dateFormat = "HH:mm:ss"

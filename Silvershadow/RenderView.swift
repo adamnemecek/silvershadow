@@ -125,7 +125,7 @@ class RenderView: XView, MTKViewDelegate {
 		// posting notification when zoomed, scrolled or resized
 
 		NotificationCenter.default.addObserver(self, selector: #selector(scrollContentDidChange),
-					name: .NSViewBoundsDidChange, object: nil)
+					name: NSView.boundsDidChangeNotification, object: nil)
 		scrollView.allowsMagnification = true
 		scrollView.maxMagnification = 4
 		scrollView.minMagnification = 1
@@ -164,7 +164,7 @@ class RenderView: XView, MTKViewDelegate {
         self.scrollView.documentView?.frame = CGRect(size: contentSize)
 
         self.contentView.translatesAutoresizingMaskIntoConstraints = false
-        self.contentView.autoresizingMask = [.viewMaxXMargin, /*.viewMinYMargin,*/ .viewMaxYMargin]
+        self.contentView.autoresizingMask = [.maxXMargin, /*.viewMinYMargin,*/ .maxYMargin]
         self.setNeedsDisplay()
     }
 	#endif
@@ -222,8 +222,8 @@ class RenderView: XView, MTKViewDelegate {
 
 		// just for clearing screen
 		do {
-			let commandBuffer = commandQueue.makeCommandBuffer()
-			let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)
+			let commandBuffer = commandQueue.makeCommandBuffer()!
+			let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
 			commandEncoder.endEncoding()
 			commandBuffer.commit()
 		}
@@ -242,7 +242,7 @@ class RenderView: XView, MTKViewDelegate {
 		scene.render(in: renderContext)
 
 		do {
-			let commandBuffer = commandQueue.makeCommandBuffer()
+			let commandBuffer = commandQueue.makeCommandBuffer()!
 			commandBuffer.present(drawable)
 			commandBuffer.commit()
 		}
