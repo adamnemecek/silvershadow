@@ -66,7 +66,6 @@ import Foundation
     }
 
     extension NSView {
-
         func setNeedsLayout() {
             layout()
         }
@@ -113,7 +112,12 @@ import Foundation
 
     extension NSScrollView {
         var zoomScale : CGFloat {
-            return magnification
+            get {
+                return magnification
+            }
+            set {
+                magnification = newValue
+            }
         }
     }
 

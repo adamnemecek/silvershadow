@@ -15,6 +15,10 @@ extension MTLDevice {
 		return MTKTextureLoader(device: self)
 	}
 
+    func makeDefaultSamplerState() -> MTLSamplerState {
+        return makeSamplerState(descriptor: .`default`)!
+    }
+
 	func texture(of image: CGImage) -> MTLTexture? {
 
 		let textureUsage : MTLTextureUsage = [.pixelFormatView, .shaderRead]
@@ -41,7 +45,9 @@ extension MTLDevice {
 			options[.origin] = MTKTextureLoader.Origin.topLeft as NSObject
 		}
 
-		do { return try textureLoader.newTexture(name: name, scaleFactor: 1.0, bundle: nil, options: options) }
+		do { return try textureLoader.newTexture(name: name, scaleFactor: 1.0,
+                                                 bundle: nil,
+                                                 options: options) }
 		catch { fatalError("\(error)") }
 	}
 

@@ -158,11 +158,11 @@ class BezierRenderer: Renderer {
 	}()
 
 	lazy var shapeSamplerState: MTLSamplerState = {
-		return self.device.makeSamplerState(descriptor: .`default`)!
+		return self.device.makeDefaultSamplerState()
 	}()
 
 	lazy var patternSamplerState: MTLSamplerState = {
-		return self.device.makeSamplerState(descriptor: .`default`)!
+		return self.device.makeDefaultSamplerState()
 	}()
 
 	private typealias LineSegment = (type: ElementType, length: CGFloat, p0: CGPoint, p1: CGPoint, p2: CGPoint, p3: CGPoint)
