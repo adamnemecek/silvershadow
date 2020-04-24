@@ -36,10 +36,10 @@ extension MTLTextureDescriptor {
 }
 
 extension MTLDevice {
-    final func makeTexture2D(size: CGSize, mipmapped: Bool, usage: MTLTextureUsage) -> MTLTexture {
+    func makeTexture2D(size: CGSize, mipmapped: Bool, usage: MTLTextureUsage) -> MTLTexture {
         return makeTexture(descriptor: .texture2DDescriptor(size: size,
                                                             mipmapped: mipmapped,
-                                                            usage: usage))
+                                                            usage: usage))!
     }
 }
 
@@ -81,7 +81,7 @@ class Canvas: Scene {
     }()
 
     lazy var subcomandQueue: MTLCommandQueue = {
-        return self.device.makeCommandQueue()
+        return self.device.makeCommandQueue()!
     }()
 
     override func update() {
@@ -104,8 +104,8 @@ class Canvas: Scene {
 
         // clear canvas texture
         renderPassDescriptor.colorAttachments[0].loadAction = .clear
-        let commandBuffer = commandQueue.makeCommandBuffer()
-        let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)
+        let commandBuffer = commandQueue.makeCommandBuffer()!
+        let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
         commandEncoder.endEncoding()
         commandBuffer.commit()
         renderPassDescriptor.colorAttachments[0].loadAction = .load
@@ -126,8 +126,8 @@ class Canvas: Scene {
             // clear subtexture
 
             subrenderPassDescriptor.colorAttachments[0].loadAction = .clear
-            let commandBuffer = commandQueue.makeCommandBuffer()
-            let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: subrenderPassDescriptor)
+            let commandBuffer = commandQueue.makeCommandBuffer()!
+            let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: subrenderPassDescriptor)!
             commandEncoder.endEncoding()
             commandBuffer.commit()
             subrenderPassDescriptor.colorAttachments[0].loadAction = .load
@@ -196,7 +196,7 @@ class Canvas: Scene {
 
         // clear subtexture
         let commandBuffer = context.makeCommandBuffer()
-        let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: subrenderPassDescriptor)
+        let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: subrenderPassDescriptor)!
         commandEncoder.endEncoding()
         commandBuffer.commit()
 
@@ -236,7 +236,7 @@ class Canvas: Scene {
 
 extension RangeReplaceableCollection where Iterator.Element : Equatable {
     mutating func remove(_ element: Iterator.Element) -> Index? {
-        return index(of: element).map { self.remove(at: $0); return $0 }
+        return firstIndex(of: element).map { self.remove(at: $0); return $0 }
     }
 }
 

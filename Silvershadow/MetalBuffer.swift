@@ -37,7 +37,7 @@ class MetalBuffer<T> {
 		let length = MemoryLayout<T>.stride * capacity
 		self.count = count
 		self.capacity = capacity
-		let buffer = self.heap.makeBuffer(length: length, options: [.storageModeShared])
+		let buffer = self.heap.makeBuffer(length: length, options: [.storageModeShared])!
 		if let vertices = vertices {
 			let destinationArrayPtr = UnsafeMutablePointer<T>(OpaquePointer(buffer.contents()))
 			let destinationArray = UnsafeMutableBufferPointer<T>(start: destinationArrayPtr, count: vertices.count)
@@ -62,7 +62,7 @@ class MetalBuffer<T> {
 		else {
 			let count = self.count
 			let length = MemoryLayout<T>.stride * (count + items.count)
-			let buffer = self.heap.makeBuffer(length: length, options: [.storageModeShared])
+			let buffer = self.heap.makeBuffer(length: length, options: [.storageModeShared])!
 			let sourceArrayPtr = UnsafeMutablePointer<T>(OpaquePointer(self.buffer.contents()))
 			let sourceArray = UnsafeMutableBufferPointer<T>(start: sourceArrayPtr, count: count)
 			let destinationArrayPtr = UnsafeMutablePointer<T>(OpaquePointer(buffer.contents()))
@@ -88,7 +88,7 @@ class MetalBuffer<T> {
 		}
 		else {
 			let bytes = MemoryLayout<T>.size * items.count
-			let buffer = self.heap.makeBuffer(bytes: items, length: bytes, options: [.storageModeShared])
+			let buffer = self.heap.makeBuffer(bytes: items, length: bytes, options: [.storageModeShared])!
 			self.count = items.count
 			self.capacity = items.count
 			self.buffer = buffer

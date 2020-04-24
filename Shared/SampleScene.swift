@@ -97,10 +97,10 @@ class SampleScene: Scene {
 		context.widthCGContext { (cgContext) in
             let paragraphStyle : NSMutableParagraphStyle = .makeParagraphStyle()
 			paragraphStyle.alignment = .center
-			let attributes = [
-				NSFontAttributeName: XFont.boldSystemFont(ofSize: 32),
-				NSForegroundColorAttributeName: XColor.white,
-				NSParagraphStyleAttributeName: paragraphStyle
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: XFont.boldSystemFont(ofSize: 32),
+                .foregroundColor: XColor.white,
+                .paragraphStyle: paragraphStyle
 			]
 			let formatter = DateFormatter()
 			formatter.dateFormat = "HH:mm:ss"

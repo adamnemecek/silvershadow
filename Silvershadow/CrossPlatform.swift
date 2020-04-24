@@ -119,7 +119,7 @@ typealias XRGBA = (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
 
     extension CGContext {
         static var current : CGContext? {
-            return NSGraphicsContext.current()?.cgContext
+            return NSGraphicsContext.current?.cgContext
         }
     }
 
@@ -156,7 +156,7 @@ extension NSMutableParagraphStyle {
         #if os(iOS)
             return NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
         #elseif os(macOS)
-            return NSParagraphStyle.default().mutableCopy() as! NSMutableParagraphStyle
+            return NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
         #endif
     }
 }
