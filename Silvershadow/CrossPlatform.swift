@@ -73,8 +73,9 @@ typealias XRGBA = (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
         func setNeedsLayout() {
             layout()
         }
-
-        func setNeedsDisplay() {
+        /// Needs to be declared as @objc as otherwise, we couldn't override it
+        /// since it's defined in a extension
+        @objc func setNeedsDisplay() {
             setNeedsDisplay(bounds)
         }
 

@@ -109,11 +109,12 @@ class ImageRenderer: Renderer {
 	
 	func texture(of image: XImage) -> MTLTexture? {
 		guard let cgImage: CGImage = image.cgImage else { return nil }
-		var options: [String : NSObject] = [MTKTextureLoaderOptionSRGB: false as NSNumber]
+        var options: [MTKTextureLoader.Option: Any] = [.SRGB: false as NSNumber]
+
 		if #available(iOS 10.0, *) {
-			options[MTKTextureLoaderOptionOrigin] = true as NSNumber
+            options[.origin] = true as NSNumber
 		}
-		return try? device.textureLoader.newTexture(with: cgImage, options: options)
+        return try? device.textureLoader.newTexture(cgImage: cgImage, options: options)
 	}
 	
 	// MARK: -

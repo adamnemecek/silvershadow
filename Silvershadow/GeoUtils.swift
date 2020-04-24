@@ -250,6 +250,7 @@ extension CGPoint {
 
 extension CGPoint {
 	init<X: CGFloatCovertible, Y: CGFloatCovertible>(_ x: X, _ y: Y) {
+        self.init()
 		self.x = x.cgFloatValue
 		self.y = y.cgFloatValue
 	}
@@ -262,6 +263,7 @@ extension CGSize {
 	}
 
 	init<W: CGFloatCovertible, H: CGFloatCovertible>(_ width: W, _ height: H) {
+        self.init()
 		self.width = width.cgFloatValue
 		self.height = height.cgFloatValue
 	}
@@ -273,6 +275,7 @@ extension CGRect {
 	}
 
 	init<X: CGFloatCovertible, Y: CGFloatCovertible, W: CGFloatCovertible, H: CGFloatCovertible>(_ x: X, _ y: Y, _ width: W, _ height: H) {
+        self.init()
 		self.origin = CGPoint(x, y)
 		self.size = CGSize(width, height)
 	}

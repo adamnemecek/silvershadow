@@ -132,7 +132,7 @@ class RenderView: XView, MTKViewDelegate {
 		// posting notification when zoomed, scrolled or resized
 		typealias T = RenderView
 		NotificationCenter.default.addObserver(self, selector: #selector(T.scrollContentDidChange(_:)),
-					name: NSNotification.Name.ViewBoundsDidChange, object: nil)
+					name: NSView.boundsDidChangeNotification, object: nil)
 		scrollView.allowsMagnification = true
 		scrollView.maxMagnification = 4
 		scrollView.minMagnification = 1
