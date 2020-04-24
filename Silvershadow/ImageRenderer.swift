@@ -96,7 +96,7 @@ class ImageRenderer: Renderer {
 	}()
 
 	lazy var colorSamplerState: MTLSamplerState = {
-		return self.device.makeSamplerState(descriptor: .`default`)
+		return self.device.makeSamplerState(descriptor: .`default`)!
 	}()
 
 	func vertexBuffer(for vertices: [Vertex]) -> VertexBuffer<Vertex>? {
@@ -152,17 +152,17 @@ class ImageRenderer: Renderer {
 		vertexBuffer.set(vertices)
 
 		let commandBuffer = context.makeCommandBuffer()
-		let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: context.renderPassDescriptor)
+		let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: context.renderPassDescriptor)!
 		encoder.pushDebugGroup("image")
 		encoder.setRenderPipelineState(self.renderPipelineState)
 
 		encoder.setFrontFacing(.clockwise)
 //		commandEncoder.setCullMode(.back)
-		encoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, at: 0)
-		encoder.setVertexBuffer(uniformsBuffer, offset: 0, at: 1)
+		encoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: 0)
+		encoder.setVertexBuffer(uniformsBuffer, offset: 0, index: 1)
 
-		encoder.setFragmentTexture(texture, at: 0)
-		encoder.setFragmentSamplerState(self.colorSamplerState, at: 0)
+		encoder.setFragmentTexture(texture, index: 0)
+		encoder.setFragmentSamplerState(self.colorSamplerState, index: 0)
 
 		encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexBuffer.count)
 		encoder.popDebugGroup()

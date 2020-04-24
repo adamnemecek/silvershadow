@@ -254,9 +254,9 @@ class RenderView: XView, MTKViewDelegate {
 		scene.render(in: renderContext)
 
 		do {
-			let commandBuffer = commandQueue.makeCommandBuffer()
+			let commandBuffer = commandQueue.makeCommandBuffer()!
 			commandBuffer.present(drawable)
-			commandBuffer.commit()
+            commandBuffer.commit()
 		}
 	}
 

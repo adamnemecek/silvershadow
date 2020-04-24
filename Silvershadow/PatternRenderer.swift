@@ -163,21 +163,21 @@ class PatternRenderer: Renderer {
 		(0 ..< vertexes.count).forEach { vertexArray[$0] = vertexes[$0] }
 
 		let commandBuffer = context.makeCommandBuffer()
-		let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: context.renderPassDescriptor)
+		let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: context.renderPassDescriptor)!
 		encoder.pushDebugGroup("pattern filling")
 		
 		encoder.setRenderPipelineState(self.renderPipelineState)
 
 		encoder.setFrontFacing(.clockwise)
 //		commandEncoder.setCullMode(.back)
-		encoder.setVertexBuffer(vertexBuffer, offset: 0, at: 0)
-		encoder.setVertexBuffer(uniformsBuffer, offset: 0, at: 1)
+		encoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+		encoder.setVertexBuffer(uniformsBuffer, offset: 0, index: 1)
 
-		encoder.setFragmentTexture(context.shadingTexture, at: 0)
-		encoder.setFragmentTexture(context.brushPattern, at: 1)
-		encoder.setFragmentSamplerState(self.shadingSamplerState, at: 0)
-		encoder.setFragmentSamplerState(self.patternSamplerState, at: 1)
-		encoder.setFragmentBuffer(uniformsBuffer, offset: 0, at: 0)
+		encoder.setFragmentTexture(context.shadingTexture, index: 0)
+		encoder.setFragmentTexture(context.brushPattern, index: 1)
+		encoder.setFragmentSamplerState(self.shadingSamplerState, index: 0)
+		encoder.setFragmentSamplerState(self.patternSamplerState, index: 1)
+		encoder.setFragmentBuffer(uniformsBuffer, offset: 0, index: 0)
 
 		encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexes.count)
 
