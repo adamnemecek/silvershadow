@@ -85,7 +85,7 @@ class RenderContext {
 		let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .`default`,
 					width: Int(self.deviceSize.width), height: Int(self.deviceSize.height), mipmapped: false)
 		descriptor.usage = [.shaderRead, .renderTarget]
-		return self.device.makeTexture(descriptor: descriptor)
+		return self.device.makeTexture(descriptor: descriptor)!
 	}()
 
 	lazy var brushShape: MTLTexture = {
@@ -110,7 +110,7 @@ class RenderContext {
 	}
 
 	func makeCommandBuffer() -> MTLCommandBuffer {
-		return commandQueue.makeCommandBuffer()
+		return commandQueue.makeCommandBuffer()!
 	}
 	
 	// MARK: -
@@ -147,9 +147,9 @@ extension RenderContext {
 		#if os(iOS)
 		UIGraphicsPushContext(context)
 		#elseif os(macOS)
-		let savedContext = NSGraphicsContext.current()
+		let savedContext = NSGraphicsContext.current
 		let graphicsContext = NSGraphicsContext(cgContext: context, flipped: false)
-		NSGraphicsContext.setCurrent(graphicsContext)
+		NSGraphicsContext.current = graphicsContext
 		#endif
 
 		closure(context)
@@ -157,7 +157,7 @@ extension RenderContext {
 		#if os(iOS)
 		UIGraphicsPopContext()
 		#elseif os(macOS)
-		NSGraphicsContext.setCurrent(savedContext)
+        NSGraphicsContext.current = savedContext
 		#endif
 
 		context.restoreGState()

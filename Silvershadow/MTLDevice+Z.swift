@@ -45,7 +45,7 @@ extension MTLDevice {
 		if #available(iOS 10.0, *) {
 			options[MTKTextureLoaderOptionOrigin] = MTKTextureLoaderOriginTopLeft as NSObject
 		}
-		do { return try self.textureLoader.newTexture(withName: name, scaleFactor: 1.0, bundle: nil, options: options) }
+        do { return try self.textureLoader.newTexture(name: name, scaleFactor: 1.0, bundle: nil, options: options) }
 		catch { fatalError("\(error)") }
 	}
 

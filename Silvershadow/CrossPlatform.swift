@@ -59,6 +59,8 @@ typealias XRGBA = (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
                 case .lineTo: path.addLine(to: points[0])
                 case .curveTo: path.addCurve(to: points[2], control1: points[0], control2: points[1])
                 case .closePath: path.closeSubpath()
+                @unknown default:
+                    fatalError()
                 }
             }
             return path
@@ -78,7 +80,7 @@ typealias XRGBA = (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
 
         func sendSubview(toBack: NSView) {
             var subviews = self.subviews
-            if let index = subviews.index(of: toBack) {
+            if let index = subviews.firstIndex(of: toBack) {
                 subviews.remove(at: index)
                 subviews.insert(toBack, at: 0)
                 self.subviews = subviews
@@ -87,7 +89,7 @@ typealias XRGBA = (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
 
         func bringSubview(toFront: NSView) {
             var subviews = self.subviews
-            if let index = subviews.index(of: toFront) {
+            if let index = subviews.firstIndex(of: toFront) {
                 subviews.remove(at: index)
                 subviews.append(toFront)
                 self.subviews = subviews
@@ -96,7 +98,7 @@ typealias XRGBA = (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
 
         func replaceSubview(subview: NSView, with other: NSView) {
             var subviews = self.subviews
-            if let index = subviews.index(of: subview) {
+            if let index = subviews.firstIndex(of: subview) {
                 subviews.remove(at: index)
                 subviews.insert(other, at: index)
                 self.subviews = subviews

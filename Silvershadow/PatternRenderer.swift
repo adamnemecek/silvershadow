@@ -96,11 +96,11 @@ class PatternRenderer: Renderer {
 	}()
 
 	lazy var shadingSamplerState: MTLSamplerState = {
-		return self.device.makeSamplerState(descriptor: .`default`)
+		return self.device.makeSamplerState(descriptor: .`default`)!
 	}()
 
 	lazy var patternSamplerState: MTLSamplerState = {
-		return self.device.makeSamplerState(descriptor: .`default`)
+		return self.device.makeSamplerState(descriptor: .`default`)!
 	}()
 
 	func vertexBuffer(for vertices: [Vertex]) -> VertexBuffer<Vertex>? {
@@ -127,9 +127,9 @@ class PatternRenderer: Renderer {
 
 	lazy var uniformTripleBuffer: [MTLBuffer] = {
 		return [
-			self.device.makeBuffer(length: MemoryLayout<Uniforms>.size, options: [.storageModeShared]),
-			self.device.makeBuffer(length: MemoryLayout<Uniforms>.size, options: [.storageModeShared]),
-			self.device.makeBuffer(length: MemoryLayout<Uniforms>.size, options: [.storageModeShared])
+			self.device.makeBuffer(length: MemoryLayout<Uniforms>.size, options: [.storageModeShared])!,
+			self.device.makeBuffer(length: MemoryLayout<Uniforms>.size, options: [.storageModeShared])!,
+			self.device.makeBuffer(length: MemoryLayout<Uniforms>.size, options: [.storageModeShared])!
 		]
 	}()
 	
@@ -138,9 +138,9 @@ class PatternRenderer: Renderer {
 	lazy var rectVertexTripleBuffer: [MTLBuffer] = {
 		let len = MemoryLayout<Vertex>.size * self.rectangularVertexCount
 		return [
-			self.device.makeBuffer(length: len, options: [.storageModeShared]),
-			self.device.makeBuffer(length: len, options: [.storageModeShared]),
-			self.device.makeBuffer(length: len, options: [.storageModeShared])
+			self.device.makeBuffer(length: len, options: [.storageModeShared])!,
+			self.device.makeBuffer(length: len, options: [.storageModeShared])!,
+			self.device.makeBuffer(length: len, options: [.storageModeShared])!
 		]
 	}()
 	

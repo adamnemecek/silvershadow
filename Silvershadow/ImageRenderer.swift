@@ -121,9 +121,9 @@ class ImageRenderer: Renderer {
 	// prepare triple reusable buffers for avoid race condition
 	lazy var uniformTripleBuffer: [MTLBuffer] = {
 		return [
-			self.device.makeBuffer(length: MemoryLayout<Uniforms>.size, options: [.storageModeShared]),
-			self.device.makeBuffer(length: MemoryLayout<Uniforms>.size, options: [.storageModeShared]),
-			self.device.makeBuffer(length: MemoryLayout<Uniforms>.size, options: [.storageModeShared])
+			self.device.makeBuffer(length: MemoryLayout<Uniforms>.size, options: [.storageModeShared])!,
+			self.device.makeBuffer(length: MemoryLayout<Uniforms>.size, options: [.storageModeShared])!,
+			self.device.makeBuffer(length: MemoryLayout<Uniforms>.size, options: [.storageModeShared])!
 		]
 	}()
 

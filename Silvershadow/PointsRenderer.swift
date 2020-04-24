@@ -86,7 +86,7 @@ class PointsRenderer: Renderer {
     }
 
     var library: MTLLibrary {
-        return self.device.newDefaultLibrary()!
+        return self.device.makeDefaultLibrary()!
     }
 
     var vertexDescriptor: MTLVertexDescriptor {
